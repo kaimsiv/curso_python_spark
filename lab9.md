@@ -285,4 +285,9 @@ print("="*60 + "\n")
 
 ### Resultado esperado
 
-Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.
+![resultado](../curso_python_spark/images/lab9_resultado1.png)
+
+---
+
+![resultado](../curso_python_spark/images/lab9_resultado2.png)
+

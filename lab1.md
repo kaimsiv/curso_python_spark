@@ -146,15 +146,4 @@ Hacer clic en el botón de **Play (▶)** ubicado en la esquina superior derecha
 
 La terminal integrada de VS Code mostrará algunos mensajes de inicialización (`WARN`) seguidos de la confirmación de la versión y la estructura de datos procesada exitosamente por el clúster local:
 
-```text
-========================================
-Versión de Spark detectada: 4.1.2
-========================================
-
-+------+----------+
-|Nombre|       Rol|
-+------+----------+
-| Kevin|Instructor|
-|Arthas|  Servidor|
-+------+----------+
-```
+![resultado](../curso_python_spark/images/lab1_resultado.png)

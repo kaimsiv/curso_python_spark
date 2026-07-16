@@ -698,15 +698,9 @@ spark.stop()
 
 ---
 
-## Notas Metodológicas
-
-A continuación, se describen conceptos clave para afianzar el control y optimización del motor distribuidor local de Apache Spark:
-
-* **Inmutabilidad de los RDD:** Una vez creado un RDD, no puede modificarse en el espacio de memoria. Cualquier transformación aplicada (`map`, `filter`, `partitionBy`) genera un RDD completamente nuevo, preservando el Linaje de Datos (*Lineage*) para tolerancia a fallos.
-* **Transformaciones (*Lazy Evaluation*) vs Acciones:** Las transformaciones son perezosas y no computan datos de inmediato; únicamente añaden nodos al grafo dirigido acíclico (DAG). La computación real solo se desencadena cuando se invoca una Acción como `.collect()`, `.count()` o `.foreach()`.
-* **Diferencia entre agregaciones:** El uso de `.groupByKey()` obliga al motor a enviar todos los pares clave-valor a través de la red/hilos antes del agrupamiento. Por el contrario, `.reduceByKey()` realiza una pre-agregación local optimizada en cada partición (*map-side combine*), reduciendo drásticamente el tamaño del Shuffling.
-* **Evaluación en Acumuladores:** Un acumulador modificado dentro de una transformación (*perezosa*) puede no verse reflejado de inmediato hasta que una acción explícita fuerce la evaluación de dicha ramificación del grafo.
 
 ### Resultado esperado
 
-Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.
+![resultado](../curso_python_spark/images/lab7_resultado.png)
+
+

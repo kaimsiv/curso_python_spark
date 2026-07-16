@@ -304,8 +304,8 @@ df_productos = df.select(
     col("Quantity").alias("Cantidad"),
     col("Sales").alias("Importe")
 ).withColumns({
-    "Total": col("Quantity") * col("Sales"),
-    "Tax": col("Sales") * 0.16
+    "Total": col("Cantidad") * col("Importe"),
+    "Tax": col("Importe") * 0.16
 })
 
 ruta_salida = "salidas/reporte_completo"
@@ -341,4 +341,7 @@ print("="*60 + "\n")
 
 ### Resultado esperado
 
-Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.
+![resultado](../curso_python_spark/images/lab3_resultado1.png)
+---
+![resultado](../curso_python_spark/images/lab3_resultado2.png)
+

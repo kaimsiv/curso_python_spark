@@ -474,13 +474,7 @@ spark.stop()
 
 ```
 
----
-
-### Notas Metodológicas
-
-* **Evaluación Perezosa (Lazy Evaluation):** Cuando utilizas sentencias SQL complejas como un `JOIN` o un `UNION`, PySpark no procesa los registros de inmediato en tu almacenamiento. Solo añade estas instrucciones a un grafo de ejecución interno (Plan Lógico). La lectura física y el cruce relacional ocurren únicamente en el momento en que se invoca la acción `.show()`.
-* **Seguridad de Rutas Locales:** Al usar la combinación de `os.path.abspath` junto con el prefijo `file://`, blindamos a Spark contra errores de interpretación de rutas relativas propios del subsistema local de Hadoop, garantizando portabilidad sin importar en qué subcarpeta del proyecto esté parada la consola de Visual Studio Code.
-
 ### Resultado esperado
 
-Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.
+![resultado](../curso_python_spark/images/lab8_resultado.png)
+

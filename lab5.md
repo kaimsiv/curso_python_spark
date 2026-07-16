@@ -102,44 +102,61 @@ import findspark
 findspark.init()
 
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType, StructField, StringType
+from pyspark.sql.functions import col
 
-# Inicialización de la sesión de Spark unificada
-spark = SparkSession.builder.appName("CSVConEsquema").getOrCreate()
+spark = SparkSession.builder.appName("SalvarDataFrames").getOrCreate()
 spark.sparkContext.setLogLevel("ERROR")
 
-# Estilos visuales
 CYAN = "\033[96m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
 
-# Se describe la estructura a leer
-schema = StructType([
-    StructField("ID", StringType(), True),
-    StructField("Name", StringType(), True),
-    StructField("Address", StringType(), True),
-    StructField("Gender", StringType(), True),
-    StructField("Status", StringType(), True)
-])
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE_DIR, "data", "Sales.csv")
+OUTPUT_DIR = os.path.join(BASE_DIR, "salidas", "reporte_completo")
 
-# Lectura utilizando ruta relativa local
-rdd = spark.sparkContext.textFile("data/Model/Customers.csv")
+if not os.path.exists(DATA_FILE):
+    raise FileNotFoundError(f"El archivo de ventas no existe: {DATA_FILE}. Genera data/Sales.csv primero.")
 
-# Se elimina el encabezado filtrando por índice
-encabezado = rdd.zipWithIndex().filter(lambda x: x[1] > 0).map(lambda x: x[0])
+# Cargar y preparar datos
+df = spark.read.csv(DATA_FILE, inferSchema=True, header=True)
+df_productos = df.select(
+    col("SalesOrderNumber").alias("Order"),
+    col("Product").alias("Producto"),
+    col("Quantity").alias("Cantidad"),
+    col("Sales").alias("Importe")
+).withColumns({
+    "Total": col("Cantidad") * col("Importe"),
+    "Tax": col("Importe") * 0.16
+})
 
-# El RDD se mapea dividiendo por comas y se convierte a DataFrame usando el esquema
-rdd_con_esquema = encabezado.map(lambda linea: linea.split(",")).toDF(schema)
-
-# Mostrar resultados ordenados en consola
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN} TAREA 1: RDD CON ESQUEMA DESDE CSV (CUSTOMERS){RESET}")
+print(f"{BOLD}{CYAN} REDUCIENDO PARTICIONES DEL CLÚSTER A 1 ARCHIVO CON coalesce(1){RESET}")
 print("="*60)
-rdd_con_esquema.show(10, truncate=False)
-rdd_con_esquema.printSchema()
-print("="*60 + "\n")
+
+df_consolidado = df_productos.coalesce(1)
+
+# Guardar en formato CSV local
+df_consolidado.write.csv(OUTPUT_DIR, header=True, mode="overwrite")
+print(f"   {GREEN}[OK]{RESET} Partición guardada en: {YELLOW}{OUTPUT_DIR}/{RESET}")
 
 spark.stop()
+
+print("-" * 60)
+print(f"{BOLD} RENOMBRANDO PARTICIÓN BINARIA A NOMBRE PLANO ESTÁNDAR{RESET}")
+print("-" * 60)
+if os.path.exists(OUTPUT_DIR):
+    archivos = os.listdir(OUTPUT_DIR)
+    archivo_csv_origen = [f for f in archivos if f.endswith(".csv") and f.startswith("part-")][0]
+
+    ruta_origen_completa = os.path.join(OUTPUT_DIR, archivo_csv_origen)
+    ruta_destino_final = os.path.join(OUTPUT_DIR, "reporte_final.csv")
+
+    os.rename(ruta_origen_completa, ruta_destino_final)
+    print(f"   {GREEN}[COMPLETO]{RESET} Archivo final listo en: {YELLOW}{ruta_destino_final}{RESET}")
+print("="*60 + "\n")
 ```
 
 #### Paso 3. Leer desde un archivo Parquet local con esquema
@@ -637,11 +654,17 @@ YELLOW = "\033[93m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE = os.path.join(BASE_DIR, "data", "Sales.csv")
+
+if not os.path.exists(DATA_FILE):
+    raise FileNotFoundError(f"No existe el archivo: {DATA_FILE}")
+
 print("\n" + "="*60)
 print(f"{BOLD}{CYAN} ENFOQUE A: SELECCIÓN DE CAMPOS EXPLICITOS VÍA DATAFRAME SELECT{RESET}")
 print("="*60)
-df = spark.read.csv("data/Sales.csv", header=True, inferSchema=True)
-campos_deseados = ["SalesOrderNumber", "OrderDate", "Customer", "Country"]
+df = spark.read.csv(DATA_FILE, header=True, inferSchema=True)
+campos_deseados = ["SalesOrderNumber", "OrderDate", "Customer", "Country", "TotalCost"]
 rdd_desde_select = df.select(*campos_deseados).rdd
 
 for row in rdd_desde_select.collect():
@@ -657,7 +680,7 @@ data_rdd_puro = [
 ]
 rdd_original = sc.parallelize(data_rdd_puro)
 
-indices_deseados = [0, 2]  # Seleccionar únicamente índice 0 y índice 2
+indices_deseados = [0, 2]
 rdd_mapeado = rdd_original.map(lambda row: tuple(row[i] for i in indices_deseados))
 print(f"   Matrices indexadas resultantes:\n     {rdd_mapeado.collect()}")
 
@@ -678,4 +701,5 @@ spark.stop()
 
 ### Resultado esperado
 
-Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.
+
+![resultado](../curso_python_spark/images/lab5_resultado.png)

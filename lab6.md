@@ -371,4 +371,4 @@ spark.stop()
 
 ### Resultado esperado
 
-Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.
+![resultado](../curso_python_spark/images/lab6_resultado.png)
