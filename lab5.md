@@ -1,65 +1,34 @@
-Aquí tienes el manual de la **Práctica 5 completamente actualizado**. Se ha integrado un set de datos de **10 registros mínimos** reales y consistentes para cada fuente, y se han reestructurado todos los scripts en Python añadiendo el silenciado de logs (`sc.setLogLevel("ERROR")`), la paleta de colores ANSI uniforme y los separadores de bloques para asegurar impresiones impecables en la terminal.
-
----
-
 # PYT_SPARK_DEVESS
 
 ## Práctica 5. Uso de funciones de transformación
 
----
+### Objetivo
 
-### Objetivos
-
-Al finalizar la práctica, serás capaz de:
+Al finalizar la práctica, se espera que el estudiante sea capaz de:
 
 * Entender y aplicar funciones de transformación sobre RDDs de manera local y eficiente en Visual Studio Code.
 * Configurar esquemas estructurados y procesar formatos CSV y Parquet de forma local.
 
+### Objetivo visual
+
+Se espera que el estudiante observe de forma clara la relación entre la actividad propuesta y el resultado que debe obtener al ejecutar los pasos del laboratorio.
 ### Duración aproximada
 
 * 60 minutos
 
 ### Prerrequisitos
 
-* Entorno de desarrollo local basado en **Visual Studio Code (VS Code)**.
-* Extensión de Python instalada en VS Code.
 * Haber completado el laboratorio 1.
-
----
-
-## Contexto Metodológico
-
-Los RDD (*Resilient Distributed Datasets*) admiten dos tipos de operaciones: **transformaciones**, que crean un nuevo conjunto de datos a partir de uno existente, y **acciones**, que devuelven un valor al programa controlador (*driver*) después de ejecutar un cálculo.
-
-Todas las transformaciones de Spark son **diferidas (lazy evaluation)**; esto significa que no calculan sus resultados de inmediato. En su lugar, solo recuerdan las transformaciones aplicadas a un conjunto de datos base (por ejemplo, un archivo). Las transformaciones solo se calculan cuando una acción requiere que se devuelva un resultado al programa controlador. Este diseño permite que Spark se ejecute de forma más eficiente.
-
-### Tipos de transformaciones en RDD
-
-Hay varias clasificaciones de transformaciones asociadas al proceso que realizan:
-
-* **De ajuste estrecho (Narrow Transformations):** Operaciones donde cada partición del RDD padre se usa por a lo sumo una partición del RDD hijo (ejemplos: `map()`, `filter()`, `flatMap()`, `distinct()`). No requieren intercambio de datos en la red (*shuffle*).
-* **Amplias (Wide Transformations):** Operaciones que involucran múltiples RDDs o dependencias complejas donde los datos deben reorganizarse a través de las particiones del clúster (ejemplos: `reduceByKey()`, `groupByKey()`, `join()`, `union()`, `intersection()`, `subtract()`, `cartesian()`). Provocan un proceso de *Shuffle* costoso en rendimiento.
-
-### ¿Por qué usar esquemas en RDD?
-
-Los esquemas en RDD permiten definir la estructura de los datos, especificando los nombres y tipos de las columnas. Esto permite a PySpark optimizar el procesamiento y ofrece:
-
-1. **Mejor rendimiento:** PySpark puede optimizar las consultas y transformaciones bajo el capó.
-2. **Validación de datos:** Permiten asegurar que los datos cumplan con la estructura definida al momento de cargarlos.
-3. **Mayor legibilidad:** El código es más fácil de entender y mantener al tener una estructura clara.
-4. **Integración:** Facilita la interoperabilidad con DataFrames y Spark SQL.
 
 ---
 
 ## Instrucciones del Laboratorio
 
-> 💡 **Nota de ejecución en VS Code:** Para ejecutar cualquiera de los siguientes scripts, abre el archivo `.py` correspondiente en VS Code y haz clic en el botón **Play (▶)** en la esquina superior derecha o presiona la tecla **F5**.
-
 ### Tarea 1. Crear un RDD con esquema a partir de archivos locales
 
 #### Paso 1. Preparación de la estructura de datos local (Blindaje contra errores)
 
-Antes de ejecutar los scripts en VS Code, abre la terminal integrada y ejecuta los siguientes comandos Bash. Esto creará la carpeta contenedora y generará tanto el archivo CSV como el archivo Parquet con un mínimo de 10 registros iniciales de prueba para garantizar una ejecución local fluida y sin errores de rutas (`PATH_NOT_FOUND`):
+Antes de ejecutar los scripts en VS Code, abre la terminal integrada y ejecuta los siguientes comandos Bash. Esto creará la carpeta contenedora y generará tanto el archivo CSV como el archivo Parquet con un mínimo de 10 registros iniciales de prueba para garantizar una ejecución local fluida y sin errores de rutas:
 
 ```bash
 # 1. Crear el directorio de datos locales
@@ -164,14 +133,13 @@ rdd_con_esquema = encabezado.map(lambda linea: linea.split(",")).toDF(schema)
 
 # Mostrar resultados ordenados en consola
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}👥 TAREA 1: RDD CON ESQUEMA DESDE CSV (CUSTOMERS){RESET}")
+print(f"{BOLD}{CYAN} TAREA 1: RDD CON ESQUEMA DESDE CSV (CUSTOMERS){RESET}")
 print("="*60)
 rdd_con_esquema.show(10, truncate=False)
 rdd_con_esquema.printSchema()
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 #### Paso 3. Leer desde un archivo Parquet local con esquema
@@ -224,14 +192,14 @@ rdd_esquema = rdd.toDF(esquema).rdd
 
 # Mostrar resultados ordenados de filas e info
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🏡 TAREA 1: PROCESAMIENTO RDD DESDE ARCHIVO PARQUET{RESET}")
+print(f"{BOLD}{GREEN} TAREA 1: PROCESAMIENTO RDD DESDE ARCHIVO PARQUET{RESET}")
 print("="*60)
-print(f"{BOLD}🔹 Registros procesados por renglón de RDD:{RESET}")
+print(f"{BOLD} Registros procesados por renglón de RDD:{RESET}")
 for row in rdd_esquema.collect():
-    print(f"  📦 {row}")
+    print(f"   {row}")
 
 print("-" * 60)
-print(f"{BOLD}🔹 Estructura y Esquema en DataFrame Base:{RESET}")
+print(f"{BOLD} Estructura y Esquema en DataFrame Base:{RESET}")
 df.show(10, 0)
 df.printSchema()
 print("="*60 + "\n")
@@ -240,13 +208,13 @@ spark.stop()
 
 ```
 
-> 📌 **Recomendación del manual:** Utilizar DataFrames cuando sea posible. Si bien es factible crear RDDs con esquemas desde archivos Parquet, se recomienda utilizar DataFrames directamente, ya que ofrecen un mejor rendimiento y funcionalidades optimizadas para el procesamiento de datos estructurados.
+>  **Recomendación:** Utilizar DataFrames cuando sea posible. Si bien es factible crear RDDs con esquemas desde archivos Parquet, se recomienda utilizar DataFrames directamente, ya que ofrecen un mejor rendimiento y funcionalidades optimizadas para el procesamiento de datos estructurados.
 
 ---
 
 ### Tarea 2. Conteo de palabras utilizando transformaciones perezosas
 
-Crea el archivo `03_conteo_palabras.py`. En este script procesaremos un conjunto de frases reales (incrementado a 10 registros significativos) para contar la frecuencia de cada palabra aplicando el concepto de *Lazy Evaluation*:
+Crea el archivo `03_conteo_palabras.py`. En este script procesaremos un conjunto de frases reales para contar la frecuencia de cada palabra aplicando el concepto de *Lazy Evaluation*:
 
 ```python
 import os
@@ -292,10 +260,10 @@ rdd_frecuencia = rdd_palabras_mayusculas.map(lambda x: (x, 1)).reduceByKey(lambd
 resultado = rdd_frecuencia.collect()
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📝 TAREA 2: RESULTADO DE CONTEO DE PALABRAS (LAZY EVALUATION){RESET}")
+print(f"{BOLD}{CYAN} TAREA 2: RESULTADO DE CONTEO DE PALABRAS (LAZY EVALUATION){RESET}")
 print("="*60)
 for token, count in resultado:
-    print(f"  🔤 {token:<15} -> 🔢 Cantidad: {count}")
+    print(f"   {token:<15} ->  Cantidad: {count}")
 print("="*60 + "\n")
 
 spark.stop()
@@ -330,14 +298,14 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🔤 VARIANTE A: CONVERTIR ELEMENTOS A MAYÚSCULAS (10 PALABRAS){RESET}")
+print(f"{BOLD}{CYAN} VARIANTE A: CONVERTIR ELEMENTOS A MAYÚSCULAS (10 PALABRAS){RESET}")
 print("="*60)
 rdd_cadenas = sc.parallelize(["hola", "mundo", "pyspark", "spark", "rdd", "python", "data", "clúster", "memoria", "esquema"])
 rdd_mayusculas = rdd_cadenas.map(lambda x: x.upper())
-print(f"  👉 {rdd_mayusculas.collect()}")
+print(f"   {rdd_mayusculas.collect()}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}👥 VARIANTE B: TRANSFORMAR TUPLAS - INCREMENTAR EDAD EN 2 (10 USUARIOS){RESET}")
+print(f"{BOLD}{GREEN} VARIANTE B: TRANSFORMAR TUPLAS - INCREMENTAR EDAD EN 2 (10 USUARIOS){RESET}")
 print("="*60)
 rdd_tuplas = sc.parallelize([
     ("Alicia", 25), ("Bernardo", 30), ("Carolina", 28), ("Daniel", 22), ("Elena", 35),
@@ -348,7 +316,7 @@ for item in rdd_tuplas_transformadas.collect():
     print(f"  • {item[0]:<10} -> Nueva Edad: {item[1]}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{YELLOW}⚙️ VARIANTE C: TRANSFORMACIONES COMPLEJAS - PARSEO NOMBRE:EDAD (10 STRINGS){RESET}")
+print(f"{BOLD}{YELLOW} VARIANTE C: TRANSFORMACIONES COMPLEJAS - PARSEO NOMBRE:EDAD (10 STRINGS){RESET}")
 print("="*60)
 rdd_formato = sc.parallelize([
     "Alice:25", "Bob:30", "Cathy:28", "David:22", "Eva:35",
@@ -356,11 +324,10 @@ rdd_formato = sc.parallelize([
 ])
 rdd_parseado = rdd_formato.map(lambda x: (x.split(":")[0], int(x.split(":")[1])))
 for item in rdd_parseado.collect():
-    print(f"  ⚡ Registro Parseado: Clave={item[0]:<8} | Valor (Int)={item[1]}")
+    print(f"   Registro Parseado: Clave={item[0]:<8} | Valor (Int)={item[1]}")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 #### 2. Función `flatMap`
@@ -397,21 +364,20 @@ palabras_map = rdd.map(lambda frase: frase.split())
 palabras_flat = rdd.flatMap(lambda frase: frase.split())
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📦 RESULTADO CON MAP (MANTIENE LISTA DE LISTAS ANIDADAS){RESET}")
+print(f"{BOLD}{CYAN} RESULTADO CON MAP (MANTIENE LISTA DE LISTAS ANIDADAS){RESET}")
 print("="*60)
 for lista in palabras_map.collect():
-    print(f"  🗂️  {lista}")
+    print(f"    {lista}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🥞 RESULTADO CON FLATMAP (ELEMENTOS APLANADOS EN UNA SOLA DIMENSIÓN){RESET}")
+print(f"{BOLD}{GREEN} RESULTADO CON FLATMAP (ELEMENTOS APLANADOS EN UNA SOLA DIMENSIÓN){RESET}")
 print("="*60)
 coleccion_plana = palabras_flat.collect()
-print(f"  📌 Total tokens: {len(coleccion_plana)}")
-print(f"  👉 Lista Completa: {coleccion_plana}")
+print(f"   Total tokens: {len(coleccion_plana)}")
+print(f"   Lista Completa: {coleccion_plana}")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 #### 3. Función `filter`
@@ -438,11 +404,11 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🔢 VARIANTE A: FILTRAR NÚMEROS PARES (10 ELEMENTOS){RESET}")
+print(f"{BOLD}{CYAN} VARIANTE A: FILTRAR NÚMEROS PARES (10 ELEMENTOS){RESET}")
 print("="*60)
 rdd_num = sc.parallelize([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 rdd_pares = rdd_num.filter(lambda x: x % 2 == 0)
-print(f"  👉 Pares detectados: {rdd_pares.collect()}")
+print(f"   Pares detectados: {rdd_pares.collect()}")
 
 rdd_personas = sc.parallelize([
     ("Alice", 25), ("Bob", 30), ("Cathy", 28), ("David", 22), ("Eva", 35),
@@ -450,7 +416,7 @@ rdd_personas = sc.parallelize([
 ])
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}💡 VARIANTE B Y C: FILTRAR TUPLAS CON LAMBDA Y DEFS (EDAD > 25){RESET}")
+print(f"{BOLD}{GREEN} VARIANTE B Y C: FILTRAR TUPLAS CON LAMBDA Y DEFS (EDAD > 25){RESET}")
 print("="*60)
 def es_mayor_de_25(persona):
     nombre, edad = persona
@@ -458,10 +424,10 @@ def es_mayor_de_25(persona):
 
 rdd_mayores = rdd_personas.filter(es_mayor_de_25)
 for p in rdd_mayores.collect():
-    print(f"  👤 Mayor de 25: {p[0]:<10} | Edad: {p[1]}")
+    print(f"   Mayor de 25: {p[0]:<10} | Edad: {p[1]}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{YELLOW}🗺️ VARIANTE D: FILTRADO COMPLEJO CON MÚLTIPLES CRITERIOS (BOGOTÁ Y > 25){RESET}")
+print(f"{BOLD}{YELLOW} VARIANTE D: FILTRADO COMPLEJO CON MÚLTIPLES CRITERIOS (BOGOTÁ Y > 25){RESET}")
 print("="*60)
 rdd_ciudades = sc.parallelize([
     ("Alice", 25, "Medellin"), ("Bob", 30, "Bogotá"), ("Cathy", 28, "Bogotá"),
@@ -470,11 +436,10 @@ rdd_ciudades = sc.parallelize([
 ])
 rdd_filtrado_complejo = rdd_ciudades.filter(lambda x: x[2] == "Bogotá" and x[1] > 25)
 for item in rdd_filtrado_complejo.collect():
-    print(f"  🎯 Match -> Nombre: {item[0]:<10} | Edad: {item[1]} | Ciudad: {item[2]}")
+    print(f"   Match -> Nombre: {item[0]:<10} | Edad: {item[1]} | Ciudad: {item[2]}")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 #### 4. Función `distinct`
@@ -500,19 +465,19 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}💎 VARIANTE A Y B: ELEMENTOS Y TUPLAS ÚNICAS DIRECTAS{RESET}")
+print(f"{BOLD}{CYAN} VARIANTE A Y B: ELEMENTOS Y TUPLAS ÚNICAS DIRECTAS{RESET}")
 print("="*60)
 rdd_duplicado = sc.parallelize([1, 2, 3, 4, 2, 3, 5, 6, 1, 7, 8, 5, 2, 9, 10])
-print(f"  🔹 Colección Única Simple: {rdd_duplicado.distinct().collect()}")
+print(f"   Colección Única Simple: {rdd_duplicado.distinct().collect()}")
 
 rdd_tuplas_dup = sc.parallelize([
     ("Alice", 25), ("Bob", 30), ("Alice", 25), ("Cathy", 28), ("Bob", 30),
     ("David", 22), ("Eva", 35), ("David", 22), ("Frank", 19), ("Alice", 25)
 ])
-print(f"  🔹 Tuplas Completas Únicas: {rdd_tuplas_dup.distinct().collect()}")
+print(f"   Tuplas Completas Únicas: {rdd_tuplas_dup.distinct().collect()}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🔮 VARIANTE C: FLUJO AVANZADO - ELIMINAR DUPLICADOS POR UNA COLUMNA{RESET}")
+print(f"{BOLD}{GREEN} VARIANTE C: FLUJO AVANZADO - ELIMINAR DUPLICADOS POR UNA COLUMNA{RESET}")
 print("="*60)
 rdd_base = sc.parallelize([
     ("Alice", 25), ("Bob", 30), ("Alice", 35), ("Cathy", 28), ("Bob", 40),
@@ -521,22 +486,21 @@ rdd_base = sc.parallelize([
 
 # 1. Seleccionar la columna "nombre" (índice 0) y aplicar distinct
 nombres_unicos = rdd_base.map(lambda x: x[0]).distinct()
-print(f"  ⚡ Nombres únicos extraídos: {nombres_unicos.collect()}")
+print(f"   Nombres únicos extraídos: {nombres_unicos.collect()}")
 
 # 2. Utilizar un join para cruzar y mantener solo un registro por nombre único
 rdd_filtrado = rdd_base.map(lambda x: (x[0], x)).join(nombres_unicos.map(lambda x: (x, 1))).map(lambda x: x[1][0])
-print(f"  ⚡ RDD filtrado final (Primer cruce):")
+print(f"   RDD filtrado final (Primer cruce):")
 for res in rdd_filtrado.collect():
-    print(f"     👉 Manteniendo registro -> {res}")
+    print(f"      Manteniendo registro -> {res}")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 #### 5. Función `union`, `intersection`, `subtract` y `cartesian`
 
-Operaciones aplicadas entre dos RDDs cuyos elementos deben ser preferentemente del mismo tipo. Crea el archivo `08_operaciones_multi_rdd.py` cargado con colecciones completas de 10 elementos:
+Operaciones aplicadas entre dos RDDs cuyos elementos deben ser preferentemente del mismo tipo. Crea el archivo `08_operaciones_multi_rdd.py` cargado con las colecciones completas de los 10 elementos creados inicialmente.
 
 ```python
 import os
@@ -558,24 +522,23 @@ rdd1 = sc.parallelize([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 rdd2 = sc.parallelize([7, 8, 9, 10, 11, 12, 13, 14, 15, 16])
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🧮 TAREA 3: OPERACIONES ÁLGEBRICAS ENTRE MULTI-RDDS{RESET}")
+print(f"{BOLD}{CYAN} TAREA 3: OPERACIONES ÁLGEBRICAS ENTRE MULTI-RDDS{RESET}")
 print("="*60)
-print(f"  🔹 Union (Agregados totales con duplicados): \n     -> {rdd1.union(rdd2).collect()}\n")
-print(f"  🔹 Intersection (Elementos compartidos en red): \n     -> {rdd1.intersection(rdd2).collect()}\n")
-print(f"  🔹 Subtract (Elementos exclusivos del RDD1): \n     -> {rdd1.subtract(rdd2).collect()}\n")
+print(f"   Union (Agregados totales con duplicados): \n     -> {rdd1.union(rdd2).collect()}\n")
+print(f"   Intersection (Elementos compartidos en red): \n     -> {rdd1.intersection(rdd2).collect()}\n")
+print(f"   Subtract (Elementos exclusivos del RDD1): \n     -> {rdd1.subtract(rdd2).collect()}\n")
 
 # Producto Cartesiano
 rdd_letras = sc.parallelize(["A", "B"])
-print(f"  🔹 Cartesian (Muestra de combinaciones RDD1 con Letras): \n     -> {rdd1.cartesian(rdd_letras).take(10)}... [Muestra]")
+print(f"   Cartesian (Muestra de combinaciones RDD1 con Letras): \n     -> {rdd1.cartesian(rdd_letras).take(10)}... [Muestra]")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 #### 6. Agregaciones Clave-Valor (`groupByKey`, `reduceByKey`, `sortByKey`)
 
-Transformaciones específicas para RDDs estructurados en pares `(Clave, Valor)`. Crea el archivo `09_agregaciones_clave_valor.py` alimentado con 10 transacciones reales:
+Transformaciones específicas para RDDs estructurados en pares `(Clave, Valor)`. Crea el archivo `09_agregaciones_clave_valor.py` alimentado con las 10 transacciones creadas incialmente:
 
 ```python
 import os
@@ -595,7 +558,7 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📂 1. APLICACIÓN DE groupByKey (10 MATRÍCULAS DE ALUMNOS){RESET}")
+print(f"{BOLD}{CYAN} 1. APLICACIÓN DE groupByKey (10 MATRÍCULAS DE ALUMNOS){RESET}")
 print("="*60)
 data_estudiantes = [
     ("Juan", "Matemáticas", 8), ("María", "Ciencias", 9), ("Juan", "Física", 7), 
@@ -606,10 +569,10 @@ rdd_estudiantes = sc.parallelize(data_estudiantes)
 grouped_rdd = rdd_estudiantes.map(lambda x: (x[0], (x[1], x[2]))).groupByKey()
 
 for student, grades in grouped_rdd.collect():
-    print(f"  👤 Estudiante: {student:<8} -> Cursos tomados: {list(grades)}")
+    print(f"   Estudiante: {student:<8} -> Cursos tomados: {list(grades)}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}📊 2. APLICACIÓN DE reduceByKey (CONSOLIDACIÓN DE 10 VENTAS AGREGADAS){RESET}")
+print(f"{BOLD}{GREEN} 2. APLICACIÓN DE reduceByKey (CONSOLIDACIÓN DE 10 VENTAS AGREGADAS){RESET}")
 print("="*60)
 data_ventas = [
     ("ProductoA", 10), ("ProductoB", 5), ("ProductoA", 15), ("ProductoC", 8), ("ProductoB", 12),
@@ -618,24 +581,23 @@ data_ventas = [
 rdd_ventas = sc.parallelize(data_ventas)
 total_ventas = rdd_ventas.reduceByKey(lambda a, b: a + b)
 for item in total_ventas.collect():
-    print(f"  📦 {item[0]:<12} -> Total Acumulado: {item[1]}")
+    print(f"   {item[0]:<12} -> Total Acumulado: {item[1]}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{YELLOW}📈 3. APLICACIÓN DE sortByKey (ORDEN ASCENDENTE VS DESCENDENTE){RESET}")
+print(f"{BOLD}{YELLOW} 3. APLICACIÓN DE sortByKey (ORDEN ASCENDENTE VS DESCENDENTE){RESET}")
 print("="*60)
-print(f"  🔼 Orden Ascendente:  {total_ventas.sortByKey(ascending=True).collect()}")
-print(f"  🔽 Orden Descendente: {total_ventas.sortByKey(ascending=False).collect()}")
+print(f"   Orden Ascendente:  {total_ventas.sortByKey(ascending=True).collect()}")
+print(f"   Orden Descendente: {total_ventas.sortByKey(ascending=False).collect()}")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 ---
 
 ### Tarea 4. Filtrado de columnas y conversión de tipos
 
-#### Paso 1. Preparación del Archivo Local de Ventas
+#### Paso 4. Preparación del Archivo Local de Ventas
 
 Ejecuta la siguiente instrucción en tu terminal integrada para generar el archivo `Sales.csv` enriquecido con exactamente 10 registros válidos antes de procesar las selecciones de campos:
 
@@ -652,10 +614,9 @@ echo "SO43665,2026-07-07,Hugo,France,900" >> data/Sales.csv
 echo "SO43666,2026-07-08,Isabel,Germany,2200" >> data/Sales.csv
 echo "SO43667,2026-07-09,Jorge,Australia,1300" >> data/Sales.csv
 echo "SO43668,2026-07-10,Elena,United States,4500" >> data/Sales.csv
-
 ```
 
-#### Paso 2. Ejecución del script de Proyección y Conversión
+#### Paso 5. Ejecución del script de Proyección y Conversión
 
 Crea el archivo `10_filtrado_y_tipos.py`. Este script recopila tanto el enfoque de DataFrames usando `.select()` como el método puro de RDD usando `.map()` con índices para aislar las columnas deseadas y realizar los casteos a tipos numéricos con 10 registros para cada flujo de evaluación:
 
@@ -677,17 +638,17 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📋 ENFOQUE A: SELECCIÓN DE CAMPOS EXPLICITOS VÍA DATAFRAME SELECT{RESET}")
+print(f"{BOLD}{CYAN} ENFOQUE A: SELECCIÓN DE CAMPOS EXPLICITOS VÍA DATAFRAME SELECT{RESET}")
 print("="*60)
 df = spark.read.csv("data/Sales.csv", header=True, inferSchema=True)
 campos_deseados = ["SalesOrderNumber", "OrderDate", "Customer", "Country"]
 rdd_desde_select = df.select(*campos_deseados).rdd
 
 for row in rdd_desde_select.collect():
-    print(f"  ⚡ Row Proyectada: {row}")
+    print(f"   Row Proyectada: {row}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🧩 ENFOQUE B: SELECCIÓN DE ÍNDICES EN RDD PURO USANDO MAP (10 FILAS){RESET}")
+print(f"{BOLD}{GREEN} ENFOQUE B: SELECCIÓN DE ÍNDICES EN RDD PURO USANDO MAP (10 FILAS){RESET}")
 print("="*60)
 data_rdd_puro = [
     ("A", 1, "X", True), ("B", 2, "Y", False), ("C", 3, "Z", True), ("D", 4, "W", False),
@@ -698,10 +659,10 @@ rdd_original = sc.parallelize(data_rdd_puro)
 
 indices_deseados = [0, 2]  # Seleccionar únicamente índice 0 y índice 2
 rdd_mapeado = rdd_original.map(lambda row: tuple(row[i] for i in indices_deseados))
-print(f"  👉 Matrices indexadas resultantes:\n     {rdd_mapeado.collect()}")
+print(f"   Matrices indexadas resultantes:\n     {rdd_mapeado.collect()}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{YELLOW}🔄 ENFOQUE C: CONVERSIÓN EXPLÍCITA DE TIPOS DE DATOS (STRING A INT){RESET}")
+print(f"{BOLD}{YELLOW} ENFOQUE C: CONVERSIÓN EXPLÍCITA DE TIPOS DE DATOS (STRING A INT){RESET}")
 print("="*60)
 rdd_datos_string = sc.parallelize([
     ("Alejandro", "25"), ("Beatriz", "30"), ("Carmen", "28"), ("Daniel", "22"), ("Elena", "35"),
@@ -709,17 +670,12 @@ rdd_datos_string = sc.parallelize([
 ])
 rdd_convertido = rdd_datos_string.map(lambda x: (x[0], int(x[1])))
 for registro in rdd_convertido.collect():
-    print(f"  ✔ Registro Convertido Tipo -> Nombre: {registro[0]:<10} | Edad (Int Value): {registro[1]}")
+    print(f"   Registro Convertido Tipo -> Nombre: {registro[0]:<10} | Edad (Int Value): {registro[1]}")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
----
+### Resultado esperado
 
-## Notas Metodológicas
-
-* **Inmutabilidad:** Las transformaciones no modifican el RDD original. En su lugar, generan una nueva estructura que se registra en un Linaje (*Lineage DAG*), garantizando la tolerancia a fallos puesto que los datos perdidos pueden ser recalculados en cualquier momento.
-* **Acciones vs Transformaciones (`collect` vs `take`):** La función `collect()` extrae **toda** la colección de datos distribuida desde los ejecutores hacia el programa controlador local (*driver*). Al trabajar en producción con conjuntos masivos, esto provocará fallos de falta de memoria (`OutOfMemoryError`). Se debe priorizar el uso de `take(n)` para extraer muestras controladas.
-* **Costo de Operaciones Clave-Valor:** `reduceByKey` ejecuta una pre-agregación local en los nodos ejecutores antes de transmitir datos por la red, disminuyendo el volumen de bytes enviados. Por el contrario, `groupByKey` envía de inmediato todos los registros individuales de la misma clave a través del clúster, impactando gravemente el desempeño de la memoria y la red.
+Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.

@@ -1,18 +1,17 @@
-Aquí tienes el manual de la **Práctica 8 completamente actualizado**. Se ha integrado un set de datos de **10 registros mínimos** reales y consistentes para cada archivo de origen, y se han reestructurado todos los scripts en Python añadiendo el silenciado de logs (`sc.setLogLevel("ERROR")`), la paleta de colores ANSI uniforme y los separadores de bloques para garantizar impresiones impecables y ordenadas en la terminal de VS Code.
-
----
-
 ## PYT_SPARK_DEVESS
 
 ### Práctica 8. Uso de agregaciones, agrupaciones y relaciones
 
-#### Objetivos
+#### Objetivo
 
-Al finalizar la práctica, serás capaz de:
+Al finalizar la práctica, se espera que el estudiante sea capaz de:
 
 * Aplicar agregaciones, agrupaciones y relaciones de tablas mediante Spark SQL en un entorno de desarrollo local.
 
-#### Duración aproximada
+#### Objetivo visual
+
+Se espera que el estudiante observe de forma clara la relación entre la actividad propuesta y el resultado que debe obtener al ejecutar los pasos del laboratorio.
+### Duración aproximada
 
 * 60 minutos.
 
@@ -63,6 +62,11 @@ echo -e "Year,TotalSales\n2025,890000" > data/TotalSales/Sales2025.csv
 
 ---
 
+
+### Instrucciones
+
+Se describen los pasos requeridos para completar la práctica de forma ordenada y coherente.
+
 ## Tarea 1. Agregaciones y agrupaciones con SQL
 
 ### Paso 1. Agrupar DataFrames (Básico)
@@ -96,7 +100,7 @@ dfSales = spark.read.csv(f"file://{ruta_sales}", inferSchema=True, header=True)
 dfSales.createOrReplaceTempView("ventas")
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📊 PASO 1: METRICAS AGRUPADAS POR PAÍS DE ORIGEN (SUM){RESET}")
+print(f"{BOLD}{CYAN} PASO 1. METRICAS AGRUPADAS POR PAÍS DE ORIGEN (SUM){RESET}")
 print("="*60)
 
 query = (
@@ -140,7 +144,7 @@ dfSales = spark.read.csv(f"file://{ruta_sales}", inferSchema=True, header=True)
 dfSales.createOrReplaceTempView("ventas")
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🗺️  PASO 2: AGRUPACIÓN MÚLTIPLE (TERRITORIO Y PAÍS){RESET}")
+print(f"{BOLD}{GREEN}  PASO 2. AGRUPACIÓN MÚLTIPLE (TERRITORIO Y PAÍS){RESET}")
 print("="*60)
 
 query = (
@@ -184,7 +188,7 @@ dfProducts = spark.read.csv(f"file://{ruta_products}", inferSchema=True, header=
 dfProducts.createOrReplaceTempView("productos")
 
 print("\n" + "="*60)
-print(f"{BOLD}{YELLOW}🧮 PASO 3: FUNCIONES SIMULTÁNEAS POR CATEGORÍA DE PRODUCTO{RESET}")
+print(f"{BOLD}{YELLOW} PASO 3. FUNCIONES SIMULTÁNEAS POR CATEGORÍA DE PRODUCTO{RESET}")
 print("="*60)
 
 query = (
@@ -227,7 +231,7 @@ dfProducts = spark.read.csv(f"file://{ruta_products}", inferSchema=True, header=
 dfProducts.createOrReplaceTempView("productos")
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🔍 PASO 4: FILTRADO POST-AGRUPACIÓN MEDIANTE CLÁUSULA HAVING{RESET}")
+print(f"{BOLD}{CYAN} PASO 4. FILTRADO POST-AGRUPACIÓN MEDIANTE CLÁUSULA HAVING{RESET}")
 print("="*60)
 
 # Consultar las categorías cuyo conteo grupal sea mayor o igual a 2 registros
@@ -271,7 +275,7 @@ dfProducts = spark.read.csv(f"file://{ruta_products}", inferSchema=True, header=
 dfProducts.createOrReplaceTempView("productos")
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}📈 PASO 5: EVALUACIÓN Y AGREGACIÓN GLOBAL DE MÉTRICAS (SIN GROUP BY){RESET}")
+print(f"{BOLD}{GREEN} PASO 5. EVALUACIÓN Y AGREGACIÓN GLOBAL DE MÉTRICAS (SIN GROUP BY){RESET}")
 print("="*60)
 
 query = (
@@ -294,7 +298,7 @@ spark.stop()
 
 Se puede utilizar SQL para trabajar con relaciones entre DataFrames utilizando operaciones como `JOIN` (cruces horizontales) y `UNION` (cruces verticales).
 
-### Paso 1. Combinar múltiples tablas con JOIN masivo
+### Paso 6. Combinar múltiples tablas con JOIN masivo
 
 1. Crea un archivo nuevo en VS Code llamado `relacion_tablas.py`.
 2. Introduce el código y ejecútalo.
@@ -328,7 +332,7 @@ dfSales = spark.read.csv(f"file://{ruta_s}", inferSchema=True, header=True)
 dfSales.createOrReplaceTempView("ventas")
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🛰️  PASO 1: RELACIÓN MULTI-TABLA (VENTAS, PRODUCTOS Y CLIENTES){RESET}")
+print(f"{BOLD}{CYAN}  PASO 6. RELACIÓN MULTI-TABLA (VENTAS, PRODUCTOS Y CLIENTES){RESET}")
 print("="*60)
 
 # Consulta relacional de las tres vistas temporales locales
@@ -347,7 +351,7 @@ spark.stop()
 
 ```
 
-### Paso 2. Evaluación de comportamientos de cruce (Datos Inline)
+### Paso 7. Evaluación de comportamientos de cruce (Datos Inline)
 
 Para enriquecer esta comparación a 10 ejemplos robustos por cada tipo de join, utilizaremos colecciones completas generadas directamente en memoria.
 
@@ -387,11 +391,11 @@ df_empleados.createOrReplaceTempView("empleados")
 df_departamentos.createOrReplaceTempView("departamentos")
 
 print("\n" + "="*60)
-print(f"{BOLD}{YELLOW}⚡ PASO 2: ANÁLISIS COMPARATIVO DE COMPORTAMIENTOS DE CRUCE (JOIN){RESET}")
+print(f"{BOLD}{YELLOW} PASO 7. ANÁLISIS COMPARATIVO DE COMPORTAMIENTOS DE CRUCE (JOIN){RESET}")
 print("="*60)
 
 # --- 1. INNER JOIN ---
-print("\n📋 [INNER JOIN] - Solo registros con coincidencia exacta:")
+print("\n [INNER JOIN] - Solo registros con coincidencia exacta:")
 query_inner = (
     "SELECT e.id_empleado, e.nombre, d.nombre_departamento "
     "FROM empleados e INNER JOIN departamentos d ON e.id_departamento = d.id_departamento"
@@ -399,7 +403,7 @@ query_inner = (
 spark.sql(query_inner).show(10, truncate=False)
 
 # --- 2. LEFT JOIN ---
-print("\n📋 [LEFT JOIN] - Todos los empleados con o sin departamento:")
+print("\n [LEFT JOIN] - Todos los empleados con o sin departamento:")
 query_left = (
     "SELECT e.id_empleado, e.nombre, d.nombre_departamento "
     "FROM empleados e LEFT JOIN departamentos d ON e.id_departamento = d.id_departamento"
@@ -407,7 +411,7 @@ query_left = (
 spark.sql(query_left).show(10, truncate=False)
 
 # --- 3. RIGHT JOIN ---
-print("\n📋 [RIGHT JOIN] - Todos los departamentos con o sin empleados:")
+print("\n [RIGHT JOIN] - Todos los departamentos con o sin empleados:")
 query_right = (
     "SELECT e.id_empleado, e.nombre, d.nombre_departamento "
     "FROM empleados e RIGHT JOIN departamentos d ON e.id_departamento = d.id_departamento"
@@ -415,7 +419,7 @@ query_right = (
 spark.sql(query_right).show(10, truncate=False)
 
 # --- 4. FULL JOIN ---
-print("\n📋 [FULL JOIN] - Consolidación absoluta de ambos extremos:")
+print("\n [FULL JOIN] - Consolidación absoluta de ambos extremos:")
 query_full = (
     "SELECT e.id_empleado, e.nombre, d.nombre_departamento "
     "FROM empleados e FULL JOIN departamentos d ON e.id_departamento = d.id_departamento"
@@ -427,7 +431,7 @@ spark.stop()
 
 ```
 
-### Paso 3. Unión Vertical con UNION
+### Paso 8. Unión Vertical con UNION
 
 1. Crea un archivo final en VS Code llamado `union_historicos.py`.
 2. Escribe y ejecuta el siguiente script que procesa el catálogo de 10 fuentes anuales:
@@ -455,7 +459,7 @@ for anio in anios:
     df.createOrReplaceTempView(f"y{anio}")
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🥞 PASO 3: FUSIÓN VERTICAL DE HISTÓRICOS DE VENTAS (UNION){RESET}")
+print(f"{BOLD}{GREEN} PASO 8. FUSIÓN VERTICAL DE HISTÓRICOS DE VENTAS (UNION){RESET}")
 print("="*60)
 
 # Fusión e impresión de los 10 sets mediante sentencias secuenciales UNION
@@ -476,3 +480,7 @@ spark.stop()
 
 * **Evaluación Perezosa (Lazy Evaluation):** Cuando utilizas sentencias SQL complejas como un `JOIN` o un `UNION`, PySpark no procesa los registros de inmediato en tu almacenamiento. Solo añade estas instrucciones a un grafo de ejecución interno (Plan Lógico). La lectura física y el cruce relacional ocurren únicamente en el momento en que se invoca la acción `.show()`.
 * **Seguridad de Rutas Locales:** Al usar la combinación de `os.path.abspath` junto con el prefijo `file://`, blindamos a Spark contra errores de interpretación de rutas relativas propios del subsistema local de Hadoop, garantizando portabilidad sin importar en qué subcarpeta del proyecto esté parada la consola de Visual Studio Code.
+
+### Resultado esperado
+
+Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.

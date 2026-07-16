@@ -1,50 +1,38 @@
-Aquí tienes el manual de la **Práctica 6 completamente actualizado**. Se ha integrado un set de datos de **10 registros mínimos** reales y consistentes para cada archivo de origen, y se han reestructurado todos los scripts en Python añadiendo el silenciado de logs (`sc.setLogLevel("ERROR")`), la paleta de colores ANSI uniforme y los separadores de bloques para garantizar impresiones impecables y ordenadas en la terminal.
-
----
-
 # PYT_SPARK_DEVESS
 
 ## Práctica 6. Acciones
 
-### Objetivos
+### Objetivo
 
-Al finalizar la práctica, serás capaz de:
+Al finalizar la práctica, se espera que el estudiante sea capaz de entender la función de las acciones y aplicarlas sobre RDD utilizando un entorno local optimizado.
 
-* Entender la función de las acciones y aplicarlas sobre RDD utilizando un entorno local optimizado.
 
+### Objetivo visual
+
+Se espera que el estudiante observe de forma clara la relación entre la actividad propuesta y el resultado que debe obtener al ejecutar los pasos del laboratorio.
 ### Duración aproximada
 
-45 minutos
-
-### Prerrequisitos
-
-* Visual Studio Code instalado localmente.
-* Extensión de Python para VS Code configurada.
-* Conexión a internet.
-
-### Contexto
-
-Las acciones en PySpark son operaciones que disparan la ejecución de las transformaciones acumuladas en un RDD (o un DataFrame). Algunas acciones comunes incluyen `collect()`, `count()`, `first()`, `take()`, `reduce()`, `foreach()` y `saveAsTextFile()`.
-
-Las acciones devuelven resultados al programa driver o escriben datos en un sistema externo. A diferencia de las transformaciones (como `map`, `filter`, etc.), que son perezosas (*lazy*) y no se ejecutan de manera inmediata, las acciones disparan el procesamiento de todo el linaje de transformaciones acumuladas.
+* 45 minutos
 
 ---
 
+
+### Instrucciones
+
+Se describen los pasos requeridos para completar la práctica de forma ordenada y coherente.
+
 ## Tarea 1. Preparación del Entorno Local y Datos de Prueba
 
-En esta tarea configurarás la estructura de carpetas relativas dentro de tu directorio de trabajo actual y generarás archivos de datos con formato consistente para realizar las pruebas locales de manera segura.
-
-### Paso 1: Configurar carpetas relativas desde la Terminal de VS Code
+### Paso 1. Configurar carpetas relativas desde la Terminal de VS Code
 
 1. Abre tu terminal integrada en Visual Studio Code.
 2. Ejecuta el siguiente comando Bash para crear las subcarpetas necesarias usando la bandera `-p`:
 
 ```bash
 mkdir -p data/TotalSalesRed/
-
 ```
 
-### Paso 2: Generar los archivos CSV locales de prueba
+### Paso 2. Generar los archivos CSV locales de prueba
 
 Para simular el volumen y estructura que requiere el laboratorio, ejecuta consecutivamente estos comandos en tu terminal local para poblar los archivos con un mínimo de 10 registros por set de datos sin depender de rutas absolutas del sistema:
 
@@ -60,14 +48,13 @@ echo -e "ID,Fecha,Cliente,Region,Pais,Cod1,Cod2,Prod,Cat,Tienda,Cantidad,Precio\
 
 # 4. Generar el archivo general Sales.csv en la raíz de data/ (10 registros para agregación por fechas)
 echo -e "ID,Fecha,Cliente,Region,Pais,Cod1,Cod2,Prod,Cat,Tienda,Cantidad,Precio\n3001,2026-07-01,C10,North,USA,M,N,Tablet,Tech,S1,3,400.00\n3002,2026-07-01,C11,North,USA,M,N,Cable,Tech,S1,5,10.00\n3003,2026-07-02,C12,South,MEX,M,N,Screen,Tech,S2,1,250.00\n3004,2026-07-02,C13,East,CAN,M,N,Router,Tech,S1,2,85.00\n3005,2026-07-02,C14,West,USA,M,N,Hub_USB,Tech,S3,6,30.00\n3006,2026-07-03,C15,North,USA,M,N,Battery,Tech,S2,4,45.00\n3007,2026-07-03,C16,South,MEX,M,N,Webcam,Tech,S1,2,75.00\n3008,2026-07-04,C17,East,CAN,M,N,Stand,Tech,S3,8,20.00\n3009,2026-07-04,C18,West,USA,M,N,Adapter,Tech,S2,10,15.00\n3010,2026-07-04,C19,North,USA,M,N,SSD_Ext,Tech,S1,1,110.00" > data/Sales.csv
-
 ```
 
 ---
 
 ## Tarea 2. Aplicar Acciones de Conteo y Muestreo en un Archivo
 
-### Paso 1: Crear el archivo de script en VS Code
+### Paso 3. Crear el archivo de script en VS Code
 
 1. En el panel explorador de VS Code, crea un nuevo archivo llamado `rdd_acciones_conteo.py`.
 2. Pega el siguiente código estructurado:
@@ -123,29 +110,28 @@ primerasMay_palabras = rdd_mayusculas.take(10)
 
 # Mostrar resultados formateados
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🚀 TAREA 2: ACCIONES DE CONTEO Y MUESTREO EN RDD{RESET}")
+print(f"{BOLD}{CYAN} TAREA 2: ACCIONES DE CONTEO Y MUESTREO EN RDD{RESET}")
 print("="*60)
-print(f"{BOLD}🔹 Cantidad total de palabras recuperadas:{RESET} {GREEN}{cantidad_palabras}{RESET}")
+print(f"{BOLD} Cantidad total de palabras recuperadas:{RESET} {GREEN}{cantidad_palabras}{RESET}")
 print("-" * 60)
-print(f"{BOLD}🔹 Muestra de primeras 10 palabras minúsculas (take):{RESET}\n  {primerasMin_palabras}")
-print(f"{BOLD}🔹 Muestra de primeras 10 palabras mayúsculas (take):{RESET}\n  {primerasMay_palabras}")
+print(f"{BOLD} Muestra de primeras 10 palabras minúsculas (take):{RESET}\n  {primerasMin_palabras}")
+print(f"{BOLD} Muestra de primeras 10 palabras mayúsculas (take):{RESET}\n  {primerasMay_palabras}")
 print("="*60 + "\n")
 
 # Cerrar la sesión de Spark de forma limpia
 spark.stop()
-
 ```
 
-### Paso 2: Ejecución
+### Paso 4. Ejecución
 
 * Guarda el archivo (`Ctrl + S`).
-* Haz clic en el botón **Play (▶)** de VS Code en la esquina superior derecha o presiona la tecla **F5** para ejecutarlo de forma local.
+* Haz clic en el botón **Play (▶)** de VS Code en la esquina superior derecha.
 
 ---
 
 ## Tarea 3. Validación de Archivos por Columnas
 
-### Paso 1: Crear el archivo de script en VS Code
+### Paso 5. Crear el archivo de script en VS Code
 
 1. Crea un nuevo archivo llamado `rdd_validacion_columnas.py`.
 2. Añade el código optimizado para examinar la integridad del archivo modificado estructuralmente:
@@ -197,28 +183,27 @@ primeras_filas = rdd_filtrado.take(3)
 
 # Mostrar resultados
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🔍 TAREA 3: AUDITORÍA Y VALIDACIÓN ESTRUCTURAL DE COLUMNAS{RESET}")
+print(f"{BOLD}{GREEN} TAREA 3: AUDITORÍA Y VALIDACIÓN ESTRUCTURAL DE COLUMNAS{RESET}")
 print("="*60)
-print(f"{BOLD}🔹 Cantidad de registros válidos encontrados (> 6 columnas):{RESET} {YELLOW}{cantidad_filas}{RESET}")
+print(f"{BOLD} Cantidad de registros válidos encontrados (> 6 columnas):{RESET} {YELLOW}{cantidad_filas}{RESET}")
 print("-" * 60)
-print(f"{BOLD}🔹 Muestra de las primeras 3 filas válidas procesadas:{RESET}")
+print(f"{BOLD} Muestra de las primeras 3 filas válidas procesadas:{RESET}")
 for fila in primeras_filas:
-    print(f"  ✔ {fila}")
+    print(f"   {fila}")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
-### Paso 2: Ejecución
+### Paso 6. Ejecución
 
-* Ejecuta este script pulsando el botón **Play (▶)** o presionando **F5**. Observa cómo se discriminan los registros truncados gracias al cálculo perezoso evaluado por las acciones de conteo.
+* Ejecuta este script pulsando el botón **Play (▶)** y observa cómo se discriminan los registros truncados gracias al cálculo perezoso evaluado por las acciones de conteo.
 
 ---
 
 ## Tarea 4. Extraer y Calcular Valores desde un CSV
 
-### Paso 1: Crear el archivo de script en VS Code
+### Paso 7. Crear el archivo de script en VS Code
 
 1. Crea un archivo llamado `rdd_calculo_valores.py`.
 2. Agrega la lógica para calcular estadísticas sobre los campos posicionales numéricos:
@@ -267,13 +252,13 @@ rdd_datos = rdd_columnas.filter(lambda linea: linea != cabecera)
 rdd_numeros = rdd_datos.map(lambda linea: float(linea[10]))
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📈 TAREA 4: EXTRACCIÓN Y ESTADÍSTICAS NUMÉRICAS DESDE CSV{RESET}")
+print(f"{BOLD}{CYAN} TAREA 4: EXTRACCIÓN Y ESTADÍSTICAS NUMÉRICAS DESDE CSV{RESET}")
 print("="*60)
-print(f"{BOLD}🔹 Muestra completa del RDD numérico recuperado (collect):{RESET}")
+print(f"{BOLD} Muestra completa del RDD numérico recuperado (collect):{RESET}")
 
 # Control simple para mostrar el contenido del rdd de manera local
 for row in rdd_numeros.collect():
-    print(f"  🔢 Valor extraído: {row}")
+    print(f"   Valor extraído: {row}")
 
 # Acción: Contar el número de elementos
 total_elementos = rdd_numeros.count()
@@ -285,21 +270,20 @@ suma_total = rdd_numeros.reduce(lambda x, y: x + y)
 promedio = suma_total / total_elementos
 
 print("-" * 60)
-print(f"📊 {BOLD}Métricas Consolidadas (Driver Local):{RESET}")
-print(f"   👉 Total Elementos : {YELLOW}{total_elementos}{RESET}")
-print(f"   👉 Suma Acumulada  : {GREEN}{suma_total}{RESET}")
-print(f"   👉 Promedio Calculado: {CYAN}{promedio:.2f}{RESET}")
+print(f" {BOLD}Métricas Consolidadas (Driver Local):{RESET}")
+print(f"    Total Elementos : {YELLOW}{total_elementos}{RESET}")
+print(f"    Suma Acumulada  : {GREEN}{suma_total}{RESET}")
+print(f"    Promedio Calculado: {CYAN}{promedio:.2f}{RESET}")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 ---
 
 ## Tarea 5. Agregación Avanzada de Importes y Ventas Diarias
 
-### Paso 1: Crear el archivo de script en VS Code
+### Paso 8. Crear el archivo de script en VS Code
 
 1. Diseña un archivo llamado `rdd_agregacion_ventas.py`.
 2. Pega el script que analiza e itera los pedidos de manera detallada:
@@ -347,11 +331,11 @@ rdd_data = rdd.filter(lambda line: line != header)
 rdd_datos = rdd_data.map(lambda line: line.split(","))
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📊 TAREA 5: ANÁLISIS DE TRASACCIONES Y VOLUMEN DE FACTURACIÓN{RESET}")
+print(f"{BOLD}{CYAN} TAREA 5: ANÁLISIS DE TRASACCIONES Y VOLUMEN DE FACTURACIÓN{RESET}")
 print("="*60)
-print(f"{BOLD}🔹 Muestra parcial de arrays segmentados (take 5):{RESET}")
+print(f"{BOLD} Muestra parcial de arrays segmentados (take 5):{RESET}")
 for fila in rdd_datos.take(5):
-    print(f"  📦 {fila}")
+    print(f"   {fila}")
 
 # Transformación: Calcular el total de ventas (Precio [11] * Cantidad [10]) por registro
 # Devuelve: (Pedido, Fecha, Cliente, Pais, Cat, Cantidad, Precio, ImporteCalculado)
@@ -361,14 +345,14 @@ rdd_ventas = rdd_datos.map(lambda x: (
 ))
 
 print("-" * 60)
-print(f"{BOLD}🔹 Ventas Detalladas con Importe Calculado (collect):{RESET}")
+print(f"{BOLD} Ventas Detalladas con Importe Calculado (collect):{RESET}")
 for row in rdd_ventas.collect():
-    print(f"  🛒 Orden: {row[0]} | Fecha: {row[1]} | País: {row[3]} | Total: {GREEN}${row[7]:.2f}{RESET}")
+    print(f"   Orden: {row[0]} | Fecha: {row[1]} | País: {row[3]} | Total: {GREEN}${row[7]:.2f}{RESET}")
 
 print("-" * 60)
-print(f"{BOLD}🔹 Métricas Consolidadas y Distribución por Día:{RESET}")
+print(f"{BOLD} Métricas Consolidadas y Distribución por Día:{RESET}")
 # Acción: Contar el número total de transacciones de ventas
-print(f"   👉 Número total de operaciones de venta: {YELLOW}{rdd_ventas.count()}{RESET}")
+print(f"    Número total de operaciones de venta: {YELLOW}{rdd_ventas.count()}{RESET}")
 
 # Transformación: Mapear a pares (fecha, 1) para contar frecuencias
 rdd_fechas = rdd_ventas.map(lambda cols: (cols[1], 1))
@@ -376,25 +360,15 @@ rdd_fechas = rdd_ventas.map(lambda cols: (cols[1], 1))
 # Transformación: Reducir por clave para agrupar ventas por día
 rdd_ventas_por_dia = rdd_fechas.reduceByKey(lambda x, y: x + y)
 
-print(f"\n   📊 Volumen agrupado por fecha de facturación:")
+print(f"\n    Volumen agrupado por fecha de facturación:")
 for fecha, ventas in rdd_ventas_por_dia.collect():
-    print(f"     📅 Fecha: {CYAN}{fecha}{RESET} -> Transacciones Realizadas: {GREEN}{ventas}{RESET}")
+    print(f"      Fecha: {CYAN}{fecha}{RESET} -> Transacciones Realizadas: {GREEN}{ventas}{RESET}")
 print("="*60 + "\n")
 
 spark.stop()
 
 ```
 
-### Paso 2: Ejecución
+### Resultado esperado
 
-* Presiona **Play (▶)** o pulsa **F5**. Confirma que la terminal local muestra ordenadamente el cálculo de los importes derivados de las columnas posicionales sin ningún problema de dependencias.
-
----
-
-## Notas Metodológicas
-
-* **Inmutabilidad y Linaje (Lineage):** En PySpark, los RDDs son completamente inmutables. Al ejecutar funciones como `map()` o `filter()`, no se alteran los datos cargados inicialmente en memoria; se genera una estructura lógica indexada que representa el siguiente paso evolutivo del flujo de datos.
-* **Evaluación Perezosa (Lazy Evaluation):** El procesamiento en Spark se divide estrictamente en dos categorías: *Transformaciones* y *Acciones*. Las transformaciones no se ejecutan cuando se definen, solo construyen un grafo lógico interno. Es la aparición de una Acción (como `count()`, `take()` o `collect()`) la que fuerza a Spark a compilar y ejecutar el procesamiento físico real.
-* **Diferencia entre `collect()` y `take(n)`:**
-* `take(n)` es una acción optimizada y segura para flujos de depuración local ya que solo extrae de manera dirigida las primeras $n$ líneas hacia el Driver.
-* `collect()` jala absolutamente **todos** los datos distribuidos procesados en los ejecutores del clúster o hilos locales hacia la memoria RAM central del Driver. Debe utilizarse únicamente con volúmenes controlados o post-agregaciones para evitar excepciones catastróficas de desbordamiento de memoria (`OutOfMemoryError`).
+Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.

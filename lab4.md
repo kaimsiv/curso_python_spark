@@ -1,27 +1,29 @@
-Aquí tienes el manual de la **Práctica 4 completamente actualizado**. Se ha integrado un set de datos de **10 registros mínimos** reales y consistentes para cada fuente, y se han reestructurado todos los scripts en Python añadiendo el silenciado de logs (`sc.setLogLevel("ERROR")`), la paleta de colores ANSI uniforme y los separadores de bloques para que las impresiones en la terminal luzcan impecables.
-
----
-
 # PYT_SPARK_DEVESS
 
 ## Práctica 4. Uso de DataFrames, cálculos y operaciones con columnas y transformaciones
 
 ### Objetivo
 
-Al finalizar la práctica, serás capaz de:
+Al finalizar la práctica, se espera que el estudiante sea capaz de implementar lecturas, consultas estructuradas, operaciones de agregación y transformaciones simulando operaciones CRUD con SQL directo en PySpark utilizando Visual Studio Code.
 
-* Implementar lecturas, consultas estructuradas, operaciones de agregación y transformaciones simulando operaciones CRUD con SQL directo en PySpark utilizando Visual Studio Code.
 
+### Objetivo visual
+
+Se espera que el estudiante observe de forma clara la relación entre la actividad propuesta y el resultado que debe obtener al ejecutar los pasos del laboratorio.
 ### Duración aproximada
 
 * 60 minutos.
 
 ### Prerrequisitos
 
-* Haber completado las prácticas 1, 2 y 3.
-* Tener los archivos de datos base generados en la subcarpeta local `data/`.
+* Haber completado las prácticas 1 y 2.
 
 ---
+
+
+### Instrucciones
+
+Se describen los pasos requeridos para completar la práctica de forma ordenada y coherente.
 
 ## Tarea 1. Crear DataFrame desde fuentes de datos y crear vistas temporales
 
@@ -32,7 +34,7 @@ Registrar un DataFrame como una vista temporal te permite ejecutar consultas SQL
 
 #### Paso 1. Preparación de datos enriquecidos para pruebas de SQL
 
-Para asegurar que las consultas del manual original (filtros de países como 'Canada' o agrupaciones por fechas) no devuelvan tablas vacías, ejecuta estos comandos en tu terminal de VS Code (`~/1python/netec`) para actualizar tus archivos de prueba con un mínimo de 10 registros por archivo:
+Para asegurar que las consultas no devuelvan tablas vacías, ejecuta estos comandos en tu terminal de VS Code para actualizar tus archivos de prueba con 10 registros por archivo:
 
 ```bash
 # 1. Crear la carpeta "data" y su subcarpeta "Model" al mismo tiempo
@@ -43,7 +45,6 @@ echo -e "SalesOrderNumber,OrderDate,Country,Product,Quantity,Sales\nSO43659,2020
 
 # 3. Regenerar el archivo Products.csv (10 registros enlazados por nombre de producto)
 echo -e "ProductKey,Product,Category,Price\n1,Mountain Bike,Bikes,3399.99\n2,Helmet,Accessories,34.99\n3,Socks,Clothing,9.50\n4,Laptop,Components,1200.00\n5,Teclado,Accessories,45.00\n6,Monitor,Components,250.00\n7,Mouse,Accessories,15.50\n8,Impresora,Components,180.00\n9,Audifonos,Accessories,60.00\n10,Disco_Duro,Components,85.00" > data/Model/Products.csv
-
 ```
 
 #### Paso 2. Creación de vista temporal local a partir de una colección
@@ -87,14 +88,13 @@ df = spark.createDataFrame(data, columnas)
 df.createOrReplaceTempView("employees")
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📊 CONSULTA SQL ESTÁNDAR SOBRE VISTA TEMPORAL (SALARIO >= 70000){RESET}")
+print(f"{BOLD}{CYAN} CONSULTA SQL ESTÁNDAR SOBRE VISTA TEMPORAL (SALARIO >= 70000){RESET}")
 print("="*60)
 result = spark.sql("SELECT name, age, salary, department FROM employees WHERE salary >= 70000")
 result.show(10, truncate=False)
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 #### Paso 3. Consultas SQL avanzadas, filtros y agregaciones desde archivos CSV
@@ -129,7 +129,7 @@ res_filtro = spark.sql("SELECT SalesOrderNumber, OrderDate, Country, Product, Sa
 res_filtro.show(10, truncate=False)
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}⚡ 2. FILTRO COMPLEJO CON OPERADORES LÓGICOS (OR, AND, BETWEEN){RESET}")
+print(f"{BOLD}{GREEN} 2. FILTRO COMPLEJO CON OPERADORES LÓGICOS (OR, AND, BETWEEN){RESET}")
 print("="*60)
 res_complejo = spark.sql("""
     SELECT SalesOrderNumber, OrderDate, Country, Product, Sales 
@@ -140,7 +140,7 @@ res_complejo = spark.sql("""
 res_complejo.show(10, truncate=False)
 
 print("\n" + "="*60)
-print(f"{BOLD}{YELLOW}📈 3. MÉTRICAS DE AGREGACIÓN DISTRIBUIDAS (GROUP BY y ORDER BY){RESET}")
+print(f"{BOLD}{YELLOW} 3. MÉTRICAS DE AGREGACIÓN DISTRIBUIDAS (GROUP BY y ORDER BY){RESET}")
 print("="*60)
 res_agrupado = spark.sql("""
     SELECT Country, COUNT(Sales) as NoOperaciones, SUM(Sales) as Total
@@ -152,16 +152,15 @@ res_agrupado.show(10, truncate=False)
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 ---
 
 ## Tarea 2. Operaciones CRUD con DataFrames (Simulación y Limitations)
 
-> ⚠️ **Nota Teórica Fundamental:** Los DataFrames en PySpark se basan en RDDs, los cuales son **estructuras inmutables y tolerantes a fallos**. Por ende, **las operaciones nativas de SQL como `UPDATE` o `DELETE` están prohibidas** y arrojarán una excepción (`AnalysisException`). Para modificar datos en Spark, se debe simular la operación proyectando nuevas columnas condicionales o filtrando registros no deseados mediante sentencias `SELECT`.
+>  **Nota Teórica Fundamental:** Los DataFrames en PySpark se basan en RDDs, los cuales son **estructuras inmutables y tolerantes a fallos**. Por ende, **las operaciones nativas de SQL como `UPDATE` o `DELETE` están prohibidas** y arrojarán una excepción (`AnalysisException`). Para modificar datos en Spark, se debe simular la operación proyectando nuevas columnas condicionales o filtrando registros no deseados mediante sentencias `SELECT`.
 
-#### Paso 1. Simulación de UPDATE (Estructuras CASE WHEN)
+#### Paso 4. Simulación de UPDATE (Estructuras CASE WHEN)
 
 Crea el archivo `crud_update.py`:
 
@@ -185,7 +184,7 @@ df = spark.read.csv("data/Model/Products.csv", inferSchema=True, header=True)
 df.createOrReplaceTempView("catalogo")
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🛠️ SIMULACIÓN CORRECTA DE UPDATE USANDO LÓGICA CONDICIONAL CASE WHEN{RESET}")
+print(f"{BOLD}{CYAN} SIMULACIÓN CORRECTA DE UPDATE USANDO LÓGICA CONDICIONAL CASE WHEN{RESET}")
 print("="*60)
 df_actualizado = spark.sql("""
     SELECT ProductKey, Product, Category, Price, 
@@ -195,19 +194,19 @@ df_actualizado = spark.sql("""
 df_actualizado.show(10, truncate=False)
 
 print("-" * 60)
-print(f"{BOLD}🚨 INTENTO DE UPDATE TRADICIONAL (DEMOSTRACIÓN DE RESTRICCIÓN){RESET}")
+print(f"{BOLD} INTENTO DE UPDATE TRADICIONAL (DEMOSTRACIÓN DE RESTRICCIÓN){RESET}")
 print("-" * 60)
 try:
     spark.sql("UPDATE catalogo SET Price = Price * 1.10 WHERE Category = 'Accessories'")
 except Exception as e:
-    print(f"  ❌ {BOLD}Spark rechazó el comando correctamente:{RESET}\n  {YELLOW}{str(e)[:105]}...{RESET}")
+    print(f"   {BOLD}Spark rechazó el comando correctamente:{RESET}\n  {YELLOW}{str(e)[:105]}...{RESET}")
 print("="*60 + "\n")
 
 spark.stop()
 
 ```
 
-#### Paso 2. Simulación de DELETE (Exclusión mediante Cláusula WHERE)
+#### Paso 5. Simulación de DELETE (Exclusión mediante Cláusula WHERE)
 
 Crea el archivo `crud_delete.py`:
 
@@ -230,7 +229,7 @@ df = spark.read.csv("data/Sales.csv", inferSchema=True, header=True)
 df.createOrReplaceTempView("ventas")
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🗑️ SIMULACIÓN DE DELETE EXCLUYENDO EL AÑO 2020 CON FILTROS DE FECHA{RESET}")
+print(f"{BOLD}{GREEN} SIMULACIÓN DE DELETE EXCLUYENDO EL AÑO 2020 CON FILTROS DE FECHA{RESET}")
 print("="*60)
 df_filtrado = spark.sql("""
     SELECT YEAR(CAST(OrderDate AS DATE)) AS Year, COUNT(Sales) as NoVentas, SUM(Sales) as TotalSales
@@ -252,7 +251,7 @@ spark.stop()
 
 Para compartir datos procesados entre diferentes flujos de analítica dentro de una misma aplicación de clúster, creamos una vista global accesible mediante el prefijo reservado de catálogo `global_temp.`.
 
-#### Paso 1. Creación e invocación inter-sesión
+#### Paso 6. Creación e invocación inter-sesión
 
 Crea el archivo `sql_vista_global.py`:
 
@@ -276,18 +275,18 @@ RESET = "\033[0m"
 df_productos = spark_principal.read.csv("data/Model/Products.csv", inferSchema=True, header=True)
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🌐 CONTEXTO: REGISTRO DE VISTA GLOBAL EN EL CATÁLOGO{RESET}")
+print(f"{BOLD}{CYAN} CONTEXTO: REGISTRO DE VISTA GLOBAL EN EL CATÁLOGO{RESET}")
 print("="*60)
 # Registrar de forma global en el catálogo distribuido
 df_productos.createOrReplaceGlobalTempView("catalogo_global")
-print(f"  ⚡ {GREEN}[INFO]{RESET} Vista global 'catalogo_global' registrada con éxito en la sesión primaria.")
+print(f"   {GREEN}[INFO]{RESET} Vista global 'catalogo_global' registrada con éxito en la sesión primaria.")
 print("-" * 60)
 
 # 2. Inicializar una Nueva Sesión de Spark Independiente (Simulación de consulta aislada)
 spark_aislada = SparkSession.builder.appName("SesionAislada").getOrCreate()
 spark_aislada.sparkContext.setLogLevel("ERROR")
 
-print(f"{BOLD}🔄 ACCEDIENDO A GLOBAL_TEMP DESDE UNA SPARKSESSION SECUNDARIA{RESET}")
+print(f"{BOLD} ACCEDIENDO A GLOBAL_TEMP DESDE UNA SPARKSESSION SECUNDARIA{RESET}")
 print("-" * 60)
 resultado = spark_aislada.sql("""
     SELECT ProductKey, Product, Category, Price 
@@ -299,16 +298,8 @@ print("="*60 + "\n")
 # Cerrar el ecosistema de sesiones de forma limpia
 spark_principal.stop()
 spark_aislada.stop()
-
 ```
 
----
+### Resultado esperado
 
-### Notas Metodológicas Críticas del Laboratorio
-
-* **¿Cuándo NO usar vistas temporales?**
-* Si vas a ejecutar un filtrado básico (`df.filter()`) o seleccionar una columna elemental (`df.select()`), la API funcional nativa de PySpark es más directa y eficiente.
-* Registrar una vista requiere procesamiento de metadatos en el catálogo interno de Spark. Evítalo si trabajas con estructuras de datos transitorias muy pequeñas.
-
-
-* **Espacio de nombres `global_temp`:** Toda vista registrada mediante `createOrReplaceGlobalTempView` requiere obligatoriamente el prefijo de ruta al ser invocada en la consulta SQL; de lo contrario, Spark la buscará en el catálogo local de la sesión activa y fallará.
+Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.

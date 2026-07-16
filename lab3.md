@@ -1,17 +1,15 @@
-Aquí tienes el manual de la **Práctica 3 completamente actualizado**. Se han integrado **10 registros mínimos** reales en cada fuente de datos y se reestructuraron todos los bloques de código Python añadiendo control de logs (`sc.setLogLevel("ERROR")`), paletas de colores ANSI y separadores uniformes para garantizar una terminal limpia y ordenada.
-
----
-
 # PYT_SPARK_DEVESS
 
 ## Práctica 3. DataFrames en PySpark
 
 ### Objetivo
 
-Al finalizar la práctica, serás capaz de:
+Al finalizar la práctica, se espera que el estudiante sea capaz de crear, manipular, transformar y exportar DataFrames en PySpark a partir de colecciones en memoria y archivos estructurados (CSV, JSON, Parquet) usando Visual Studio Code.
 
-* Crear, manipular, transformar y exportar DataFrames en PySpark a partir de colecciones en memoria y archivos estructurados (CSV, JSON, Parquet) usando Visual Studio Code.
 
+### Objetivo visual
+
+Se espera que el estudiante observe de forma clara la relación entre la actividad propuesta y el resultado que debe obtener al ejecutar los pasos del laboratorio.
 ### Duración aproximada:
 
 * 45 minutos.
@@ -23,13 +21,18 @@ Al finalizar la práctica, serás capaz de:
 
 ---
 
+
+### Instrucciones
+
+Se describen los pasos requeridos para completar la práctica de forma ordenada y coherente.
+
 ## Tarea 1. Creando DataFrames
 
 Los DataFrames son estructuras de datos distribuidas y optimizadas con tipos de datos asignados por columna, ofreciendo un rendimiento muy superior al de los RDDs tradicionales.
 
 #### Paso 1. Preparación de los archivos de datos de prueba
 
-Antes de ejecutar los códigos de lectura, ejecuta los siguientes comandos en tu terminal integrada de VS Code (`~/1python/netec`) para poblar la carpeta local `data/` con archivos CSV, JSON y Parquet de prueba con un mínimo de 10 registros cada uno:
+Antes de ejecutar los códigos de lectura, ejecuta los siguientes comandos en tu terminal integrada de VS Code (`~/1python/netec`) para poblar la carpeta local `data/` con archivos CSV, JSON y Parquet de prueba con los siguientes 10 registros cada uno:
 
 ```bash
 mkdir -p data/Model/
@@ -45,7 +48,6 @@ echo -e '[\n  {"Nombre": "Alfonso", "Edad": 25, "Ciudad": "Abejorral"},\n  {"Nom
 
 # 4. Crear un parquet base usando 10 registros inmobiliarios
 python3 -c "import os; os.environ['JAVA_HOME']='/usr/lib/jvm/java-17-openjdk-amd64'; import findspark; findspark.init(); from pyspark.sql import SparkSession; s=SparkSession.builder.getOrCreate(); datos=[('Casa Centro', 250000), ('Dpto Sur', 120000), ('Casa Norte', 310000), ('Dpto Este', 95000), ('Penthouse', 550000), ('Local Comercial', 420000), ('Terreno Campo', 85000), ('Duplex Playa', 280000), ('Oficina Inversion', 165000), ('Chalet Bosque', 210000)]; s.createDataFrame(datos, ['Propiedad', 'Precio']).write.mode('overwrite').parquet('data/house-price.parquet'); s.stop()"
-
 ```
 
 #### Paso 2. Crear DataFrame desde una Lista y un Diccionario
@@ -70,7 +72,7 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📊 1. DATAFRAME A PARTIR DE UNA LISTA DE TUPLAS (10 MESES){RESET}")
+print(f"{BOLD}{CYAN} 1. DATAFRAME A PARTIR DE UNA LISTA DE TUPLAS (10 MESES){RESET}")
 print("="*60)
 data_lista = [
     ("Enero", 34667), ("Febrero", 48795), ("Marzo", 87548), 
@@ -82,7 +84,7 @@ df_lista = spark.createDataFrame(data_lista, ["Mes", "Ingreso"])
 df_lista.show(10, truncate=False)
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}📊 2. DATAFRAME A PARTIR DE UNA LISTA DE DICCIONARIOS (10 USUARIOS){RESET}")
+print(f"{BOLD}{GREEN} 2. DATAFRAME A PARTIR DE UNA LISTA DE DICCIONARIOS (10 USUARIOS){RESET}")
 print("="*60)
 data_dict = [
     {"Nombre": "Alfonso", "Edad": 25, "Ciudad": "Abejorral"},
@@ -99,12 +101,11 @@ data_dict = [
 df_dict = spark.createDataFrame(data_dict)
 df_dict.show(10, truncate=False)
 
-print(f"{BOLD}🔹 Esquema del Diccionario:{RESET}")
+print(f"{BOLD} Esquema del Diccionario:{RESET}")
 df_dict.printSchema()
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 #### Paso 3. Crear DataFrame desde fuentes de archivos externos (CSV, Parquet, JSON)
@@ -129,21 +130,21 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📄 1. LECTURA DE CSV CON INFERENCIA DE ESQUEMA Y CABECERA{RESET}")
+print(f"{BOLD}{CYAN} 1. LECTURA DE CSV CON INFERENCIA DE ESQUEMA Y CABECERA{RESET}")
 print("="*60)
 df_csv = spark.read.csv("data/Sales.csv", header=True, inferSchema=True)
 df_csv.show(10, truncate=False)
 df_csv.printSchema()
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}📦 2. LECTURA DE ARCHIVO OPTIMIZADO PARQUET{RESET}")
+print(f"{BOLD}{GREEN} 2. LECTURA DE ARCHIVO OPTIMIZADO PARQUET{RESET}")
 print("="*60)
 df_parquet = spark.read.parquet("data/house-price.parquet")
 df_parquet.show(10, truncate=False)
 df_parquet.printSchema()
 
 print("\n" + "="*60)
-print(f"{BOLD}{YELLOW}✨ 3. LECTURA DE ARCHIVO SEMIESTRUCTURADO JSON{RESET}")
+print(f"{BOLD}{YELLOW} 3. LECTURA DE ARCHIVO SEMIESTRUCTURADO JSON{RESET}")
 print("="*60)
 df_json = spark.read.json("data/users.json", multiLine=True)
 df_json.show(10, truncate=False)
@@ -151,14 +152,13 @@ df_json.printSchema()
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 ---
 
 ## Tarea 2. Trabajando con DataFrames (Transformaciones)
 
-#### Paso 1. Selección y renombrado de columnas utilizando `col()` y `alias()`
+#### Paso 4. Selección y renombrado de columnas utilizando `col()` y `alias()`
 
 Crea el archivo `df_transformacion_columnas.py`:
 
@@ -183,12 +183,12 @@ RESET = "\033[0m"
 df_productos = spark.read.csv("data/Model/Products.csv", inferSchema=True, header=True)
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🔍 SELECCIÓN BÁSICA USANDO STRINGS (PRODUCTOS){RESET}")
+print(f"{BOLD}{CYAN} SELECCIÓN BÁSICA USANDO STRINGS (PRODUCTOS){RESET}")
 print("="*60)
 df_productos.select("Product", "Cost", "Price").show(10, truncate=False)
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🔄 SELECCIÓN Y MAPEO AVANZADO USANDO OBJETOS col() Y alias(){RESET}")
+print(f"{BOLD}{GREEN} SELECCIÓN Y MAPEO AVANZADO USANDO OBJETOS col() Y alias(){RESET}")
 print("="*60)
 df_sales = spark.read.csv("data/Sales.csv", inferSchema=True, header=True)
 
@@ -205,7 +205,7 @@ spark.stop()
 
 ```
 
-#### Paso 2. Agregar columnas constantes (`lit`), calculadas (`expr`) y múltiples (`withColumns`)
+#### Paso 5. Agregar columnas constantes (`lit`), calculadas (`expr`) y múltiples (`withColumns`)
 
 Crea el archivo `df_columnas_calculadas.py`:
 
@@ -232,7 +232,7 @@ df_json = spark.read.json("data/users.json", multiLine=True)
 df_empleados = df_json.withColumn("Status", lit("Active"))
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🚀 COLUMNA ESTÁTICA AGREGADA CON lit(){RESET}")
+print(f"{BOLD}{CYAN} COLUMNA ESTÁTICA AGREGADA CON lit(){RESET}")
 print("="*60)
 df_empleados.show(10, truncate=False)
 
@@ -240,7 +240,7 @@ df_empleados.show(10, truncate=False)
 df_sales = spark.read.csv("data/Sales.csv", inferSchema=True, header=True)
 
 print("\n" + "="*60)
-print(f"{BOLD}{GREEN}🧮 COLUMNA CALCULADA EN LÍNEA USANDO expr() (SUBTOTAL){RESET}")
+print(f"{BOLD}{GREEN} COLUMNA CALCULADA EN LÍNEA USANDO expr() (SUBTOTAL){RESET}")
 print("="*60)
 df_sales.select(
     col("SalesOrderNumber").alias("Order"),
@@ -249,7 +249,7 @@ df_sales.select(
 ).show(10, truncate=False)
 
 print("\n" + "="*60)
-print(f"{BOLD}{YELLOW}📊 AGREGAR MÚLTIPLES COLUMNAS USANDO UN DICCIONARIO EN withColumns(){RESET}")
+print(f"{BOLD}{YELLOW} AGREGAR MÚLTIPLES COLUMNAS USANDO UN DICCIONARIO EN withColumns(){RESET}")
 print("="*60)
 df_resumen = df_sales.select(
     col("SalesOrderNumber").alias("Order"),
@@ -266,7 +266,6 @@ df_final.show(10, truncate=False)
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
 
 ---
@@ -275,7 +274,7 @@ spark.stop()
 
 Cuando Spark guarda un archivo, escribe una partición por cada núcleo activo del clúster local. Para consolidar el resultado en un solo archivo físico en disco y renombrarlo utilizando Python, aplicamos `.coalesce(1)`.
 
-#### Paso 1. Exportar y reestructurar salidas locales
+#### Paso 6. Exportar y reestructurar salidas locales
 
 Crea el archivo `df_exportar_coalesce.py`:
 
@@ -312,20 +311,20 @@ df_productos = df.select(
 ruta_salida = "salidas/reporte_completo"
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}💾 REDUCIENDO PARTICIONES DEL CLÚSTER A 1 ARCHIVO CON coalesce(1){RESET}")
+print(f"{BOLD}{CYAN} REDUCIENDO PARTICIONES DEL CLÚSTER A 1 ARCHIVO CON coalesce(1){RESET}")
 print("="*60)
 
 df_consolidado = df_productos.coalesce(1)
 
 # Guardar en formato CSV local
 df_consolidado.write.csv(ruta_salida, header=True, mode="overwrite")
-print(f"  ⚡ {GREEN}[OK]{RESET} Partición guardada en: {YELLOW}{ruta_salida}/{RESET}")
+print(f"   {GREEN}[OK]{RESET} Partición guardada en: {YELLOW}{ruta_salida}/{RESET}")
 
 spark.stop()
 
 # --- Bloque del Sistema Operativo para renombrar el archivo resultante ---
 print("-" * 60)
-print(f"{BOLD}🔄 RENOMBRANDO PARTICIÓN BINARIA A NOMBRE PLANO ESTÁNDAR{RESET}")
+print(f"{BOLD} RENOMBRANDO PARTICIÓN BINARIA A NOMBRE PLANO ESTÁNDAR{RESET}")
 print("-" * 60)
 if os.path.exists(ruta_salida):
     archivos = os.listdir(ruta_salida)
@@ -336,14 +335,10 @@ if os.path.exists(ruta_salida):
     ruta_destino_final = os.path.join(ruta_salida, "reporte_final.csv")
     
     os.rename(ruta_origen_completa, ruta_destino_final)
-    print(f"  ✨ {GREEN}[COMPLETO]{RESET} Archivo final listo en: {YELLOW}{ruta_destino_final}{RESET}")
+    print(f"   {GREEN}[COMPLETO]{RESET} Archivo final listo en: {YELLOW}{ruta_destino_final}{RESET}")
 print("="*60 + "\n")
-
 ```
 
----
+### Resultado esperado
 
-### Notas Metodológicas Críticas del Laboratorio
-
-* **`inferSchema=True`:** Obliga a Spark a realizar un escaneo adicional sobre los datos para determinar si el campo es entero, flotante o cadena de texto. En ambientes productivos masivos, se prefiere definir un esquema explícito (`StructType`) para ahorrar procesamiento.
-* **`coalesce(1)` vs `repartition(1)`:** Ambas funciones reducen las particiones de los datos, pero `coalesce` es mucho más eficiente ya que minimiza el intercambio de datos entre nodos (*shuffle*) al agrupar particiones existentes de forma lineal.
+Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.

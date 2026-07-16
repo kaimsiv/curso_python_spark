@@ -5,20 +5,26 @@
 
 ### Objetivo
 
-Al finalizar la práctica, serás capaz de:
+Al finalizar la práctica, se espera que el estudiante sea capaz de iniciar la carga de datos en RDD a partir de diferentes fuentes de información directamente desde Visual Studio Code utilizando rutas relativas locales.
 
-* Iniciar la carga de datos en RDD a partir de diferentes fuentes de información directamente desde Visual Studio Code utilizando rutas relativas locales.
 
+### Objetivo visual
+
+Se espera que el estudiante observe de forma clara la relación entre la actividad propuesta y el resultado que debe obtener al ejecutar los pasos del laboratorio.
 ### Duración aproximada:
 
-* 45 minutes.
+* 45 minutos.
 
 ### Prerrequisitos
 
 * Haber completado la instalación del ambiente simplificado en VS Code (Práctica 1).
 * Contar con el entorno de Java 17 activo y las librerías `pyspark` y `findspark` instaladas.
-
 ---
+
+
+### Instrucciones
+
+Se describen los pasos requeridos para completar la práctica de forma ordenada y coherente.
 
 ## Tarea 1. Crear y configurar SparkSession y SparkContext
 
@@ -49,7 +55,6 @@ print("="*40 + "\n")
 
 # 3. Detener ordenadamente la sesión
 spark.stop()
-
 ```
 
 #### Paso 2. Configuración avanzada y control de recursos
@@ -78,7 +83,6 @@ print("SparkSession avanzada inicializada con éxito.")
 print("="*40 + "\n")
 
 spark.stop()
-
 ```
 
 ---
@@ -87,7 +91,7 @@ spark.stop()
 
 Un RDD (Resilient Distributed Dataset) representa una colección inmutable de elementos que se procesa en paralelo. Usaremos el método `parallelize` expuesto a través del componente `.sparkContext` de nuestra sesión unificada.
 
-#### Paso 1. RDD Vacío y RDD con Rangos Numéricos
+#### Paso 3. RDD Vacío y RDD con Rangos Numéricos
 
 Crea un archivo llamado `tarea2_conjuntos.py`:
 
@@ -120,9 +124,9 @@ datos_lista = ["Laptop", "Impresora", "Teclado", "Memoria"]
 rdd_productos = sc.parallelize(datos_lista)
 
 print("\n" + "="*50)
-print(f"{BOLD}{CYAN}🚀 SECCIÓN 1: RDD DE PRODUCTOS SIMPLES{RESET}")
+print(f"{BOLD}{CYAN} SECCIÓN 1: RDD DE PRODUCTOS SIMPLES{RESET}")
 print("="*50)
-print(f"{BOLD}🔹 Elementos recuperados:{RESET}")
+print(f"{BOLD} Elementos recuperados:{RESET}")
 for producto in rdd_productos.collect():
     print(f"  • {producto}")
 
@@ -133,25 +137,24 @@ datos_tuplas = [("Ana", 25), ("Berta", 30), ("Carolina", 35)]
 rdd_personas = sc.parallelize(datos_tuplas)
 
 print("\n" + "="*50)
-print(f"{BOLD}{GREEN}📊 SECCIÓN 2: RDD DE ESTRUCTURAS COMPLEJAS (TUPLAS){RESET}")
+print(f"{BOLD}{GREEN} SECCIÓN 2: RDD DE ESTRUCTURAS COMPLEJAS (TUPLAS){RESET}")
 print("="*50)
 
 # Mostrar como una tabla ordenada usando Spark DataFrames para aprovechar su diseño
-print(f"{BOLD}🔹 Vista Estructurada:{RESET}")
+print(f"{BOLD} Vista Estructurada:{RESET}")
 df_personas = spark.createDataFrame(rdd_personas, ["Nombre", "Edad"])
 df_personas.show(truncate=False)
 
 # Metadatos del objeto
 print("-" * 50)
-print(f"{BOLD}ℹ️  Información del Sistema:{RESET}")
+print(f"{BOLD}ℹ  Información del Sistema:{RESET}")
 print(f"   Type: {YELLOW}{type(rdd_personas)}{RESET}")
 print("="*50 + "\n")
 
 spark.stop()
-
 ```
 
-#### Paso 2. RDD a partir de Colecciones (Listas y Tuplas de Python)
+#### Paso 4. RDD a partir de Colecciones (Listas y Tuplas de Python)
 
 Crea un archivo llamado `tarea2_listas.py`:
 
@@ -184,7 +187,7 @@ RESET = "\033[0m"
 text_rdd = sc.textFile("data/salesrpt.txt")
 
 print("\n" + "="*50)
-print(f"{BOLD}{CYAN}📄 SECCIÓN 1: CONTENIDO DEL ARCHIVO DE VENTAS{RESET}")
+print(f"{BOLD}{CYAN} SECCIÓN 1: CONTENIDO DEL ARCHIVO DE VENTAS{RESET}")
 print("="*50)
 
 # Imprimir fila por fila para que se vea como una tabla real
@@ -192,7 +195,7 @@ for linea in text_rdd.collect():
     print(f"  {linea}")
 
 print("-" * 50)
-print(f"📊 {BOLD}Número total de líneas:{RESET} {YELLOW}{text_rdd.count()}{RESET}")
+print(f" {BOLD}Número total de líneas:{RESET} {YELLOW}{text_rdd.count()}{RESET}")
 print("="*50)
 
 
@@ -202,7 +205,7 @@ print("="*50)
 multi_rdd = sc.textFile("data/dirtxt/*.txt")
 
 print("\n" + "="*50)
-print(f"{BOLD}{GREEN}📂 SECCIÓN 2: CONTENIDO UNIFICADO DE LA CARPETA{RESET}")
+print(f"{BOLD}{GREEN} SECCIÓN 2: CONTENIDO UNIFICADO DE LA CARPETA{RESET}")
 print("="*50)
 
 # Imprimir ordenadamente todas las líneas consolidadas
@@ -210,16 +213,16 @@ for linea in multi_rdd.collect():
     print(f"  {linea}")
 
 print("-" * 50)
-print(f"📊 {BOLD}Total líneas agregadas de la carpeta:{RESET} {YELLOW}{multi_rdd.count()}{RESET}")
+print(f" {BOLD}Total líneas agregadas de la carpeta:{RESET} {YELLOW}{multi_rdd.count()}{RESET}")
 print("="*50)
 
 
 # ==========================================
 # 3. Vista previa controlada (Muestra)
 # ==========================================
-print(f"\n✨ {BOLD}Muestra de las primeras 2 líneas procesadas:{RESET}")
+print(f"\n {BOLD}Muestra de las primeras 2 líneas procesadas:{RESET}")
 for linea in multi_rdd.take(2):
-    print(f"   ⚡ > {linea}")
+    print(f"    > {linea}")
 print()
 
 spark.stop()
@@ -229,7 +232,7 @@ spark.stop()
 
 ## Tarea 3. Crear un RDD a partir de fuentes externas (Archivos)
 
-#### Paso 1. Preparar el entorno de datos local
+#### Paso 5. Preparar el entorno de datos local
 
 Asegúrate de estar en tu ruta actual `~/1python/netec` en la terminal de VS Code y ejecuta los siguientes comandos para estructurar la carpeta interna de datos de prueba:
 
@@ -247,7 +250,7 @@ echo -e "mes,meta_ventas,alcanzado\nEnero,100,105\nFebrero,150,140\nMarzo,200,21
 echo -e "ciudad,ventas_totales,vendedores\nMadrid,5000,12\nBarcelona,4200,9\nValencia,2800,6\nSevilla,3100,7\nBilbao,2500,4\nZaragoza,1900,3\nMalaga,2900,5\nMurcia,1500,3\nPalma,2100,4\nLas_Palmas,1800,3" > data/dirtxt/marzo.txt
 ```
 
-#### Paso 2. Lectura usando rutas relativas
+#### Paso 6. Lectura usando rutas relativas
 
 Crea un archivo llamado `tarea3_archivos.py` en tu VS Code:
 
@@ -280,7 +283,7 @@ RESET = "\033[0m"
 text_rdd = sc.textFile("data/salesrpt.txt")
 
 print("\n" + "="*50)
-print(f"{BOLD}{CYAN}📄 SECCIÓN 1: CONTENIDO DEL ARCHIVO DE VENTAS{RESET}")
+print(f"{BOLD}{CYAN} SECCIÓN 1: CONTENIDO DEL ARCHIVO DE VENTAS{RESET}")
 print("="*50)
 
 # Imprimir fila por fila para que se vea como una tabla real
@@ -288,7 +291,7 @@ for linea in text_rdd.collect():
     print(f"  {linea}")
 
 print("-" * 50)
-print(f"📊 {BOLD}Número total de líneas:{RESET} {YELLOW}{text_rdd.count()}{RESET}")
+print(f" {BOLD}Número total de líneas:{RESET} {YELLOW}{text_rdd.count()}{RESET}")
 print("="*50)
 
 
@@ -298,7 +301,7 @@ print("="*50)
 multi_rdd = sc.textFile("data/dirtxt/*.txt")
 
 print("\n" + "="*50)
-print(f"{BOLD}{GREEN}📂 SECCIÓN 2: CONTENIDO UNIFICADO DE LA CARPETA{RESET}")
+print(f"{BOLD}{GREEN} SECCIÓN 2: CONTENIDO UNIFICADO DE LA CARPETA{RESET}")
 print("="*50)
 
 # Imprimir ordenadamente todas las líneas consolidadas
@@ -306,16 +309,16 @@ for linea in multi_rdd.collect():
     print(f"  {linea}")
 
 print("-" * 50)
-print(f"📊 {BOLD}Total líneas agregadas de la carpeta:{RESET} {YELLOW}{multi_rdd.count()}{RESET}")
+print(f" {BOLD}Total líneas agregadas de la carpeta:{RESET} {YELLOW}{multi_rdd.count()}{RESET}")
 print("="*50)
 
 
 # ==========================================
 # 3. Vista previa controlada (Muestra)
 # ==========================================
-print(f"\n✨ {BOLD}Muestra de las primeras 2 líneas procesadas:{RESET}")
+print(f"\n {BOLD}Muestra de las primeras 2 líneas procesadas:{RESET}")
 for linea in multi_rdd.take(2):
-    print(f"   ⚡ > {linea}")
+    print(f"    > {linea}")
 print()
 
 spark.stop()
@@ -325,7 +328,7 @@ spark.stop()
 
 ## Tarea 4. Inspeccionar y parsear un RDD estructurado (CSV)
 
-#### Paso 1. Generar el CSV de prueba en tu directorio actual
+#### Paso 7. Generar el CSV de prueba en tu directorio actual
 
 Ejecuta esto en tu terminal integrada para añadir el archivo delimitado directamente a tu subcarpeta `data/`:
 
@@ -333,7 +336,7 @@ Ejecuta esto en tu terminal integrada para añadir el archivo delimitado directa
 echo -e "id,cliente,edad\n1,Alicia,25\n2,Bernardo,30\n3,Carla,35\n4,Daniel,28\n5,Elena,42\n6,Fernando,19\n7,Gabriela,31\n8,Hugo,50\n9,Isabel,24\n10,Jorge,37" > data/clientes.csv
 ```
 
-#### Paso 2. Parseo funcional del RDD
+#### Paso 8. Parseo funcional del RDD
 
 Crea un archivo llamado `tarea4_parseo.py` en VS Code:
 
@@ -374,15 +377,15 @@ rdd_split = rdd_data.map(lambda line: line.split(","))
 # VISTA DE REGISTROS PARSEADOS
 # ==========================================
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📊 RDD ESTRUCTURADO EN MATRICES DISCRETAS (ARRAYS){RESET}")
+print(f"{BOLD}{CYAN} RDD ESTRUCTURADO EN MATRICES DISCRETAS (ARRAYS){RESET}")
 print("="*60)
 
-print(f"{BOLD}🔹 Encabezado omitido:{RESET} {YELLOW}[{header}]{RESET}\n")
-print(f"{BOLD}🔹 Lista de registros transformados (Fila por Fila):{RESET}")
+print(f"{BOLD} Encabezado omitido:{RESET} {YELLOW}[{header}]{RESET}\n")
+print(f"{BOLD} Lista de registros transformados (Fila por Fila):{RESET}")
 
 # Recorrer las listas internas para que no se amontonen en una sola línea de texto
 for registro in rdd_split.collect():
-    print(f"  ⚡ {registro}")
+    print(f"   {registro}")
 
 print("-" * 60)
 
@@ -390,8 +393,8 @@ print("-" * 60)
 # ==========================================
 # VISTA PREVIA DEL PRIMER ELEMENTO
 # ==========================================
-print(f"💡 {BOLD}Primer registro parseado individualmente:{RESET}")
-print(f"   👉 {GREEN}{rdd_split.first()}{RESET}")
+print(f" {BOLD}Primer registro parseado individualmente:{RESET}")
+print(f"    {GREEN}{rdd_split.first()}{RESET}")
 print("="*60 + "\n")
 
 spark.stop()
@@ -401,16 +404,15 @@ spark.stop()
 
 ## Tarea 5. Persistencia y Exportación de Datos (Guardar RDDs)
 
-#### Paso 1. Configuración de almacenamiento local
+#### Paso 9. Configuración de almacenamiento local
 
 Crea la carpeta de salidas directamente en tu directorio de trabajo actual:
 
 ```bash
 mkdir -p salidas/
-
 ```
 
-#### Paso 2. Conversión a DataFrame para formatos estructurados
+#### Paso 10. Conversión a DataFrame para formatos estructurados
 
 Crea el script `tarea5_exportar.py`:
 
@@ -448,10 +450,10 @@ df = spark.createDataFrame(rdd, schema=["nombre", "id"])
 # VISTA DEL ESQUEMA DEL DATAFRAME
 # ==========================================
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}📐 TAREA 5: ESTRUCTURA DEL DATAFRAME PARA PERSISTENCIA{RESET}")
+print(f"{BOLD}{CYAN} TAREA 5: ESTRUCTURA DEL DATAFRAME PARA PERSISTENCIA{RESET}")
 print("="*60)
 
-print(f"{BOLD}🔹 Esquema detectado (Schema):{RESET}")
+print(f"{BOLD} Esquema detectado (Schema):{RESET}")
 df.printSchema()
 
 print("-" * 60)
@@ -460,29 +462,28 @@ print("-" * 60)
 # ==========================================
 # EXPORTACIÓN Y PERSISTENCIA DE DATOS
 # ==========================================
-print(f"💾 {BOLD}Iniciando exportación de formatos locales...{RESET}")
+print(f" {BOLD}Iniciando exportación de formatos locales...{RESET}")
 
 # Escritura en múltiples formatos utilizando rutas locales relativas
 df.write.mode("overwrite").parquet("salidas/datos_parquet")
-print(f"  ⚡ {GREEN}[OK]{RESET} Formato columnar optimizado -> {YELLOW}salidas/datos_parquet{RESET}")
+print(f"   {GREEN}[OK]{RESET} Formato columnar optimizado -> {YELLOW}salidas/datos_parquet{RESET}")
 
 df.write.mode("overwrite").json("salidas/datos_json")
-print(f"  ⚡ {GREEN}[OK]{RESET} Formato semiestructurado    -> {YELLOW}salidas/datos_json{RESET}")
+print(f"   {GREEN}[OK]{RESET} Formato semiestructurado    -> {YELLOW}salidas/datos_json{RESET}")
 
 df.write.mode("overwrite").csv("salidas/datos_csv")
-print(f"  ⚡ {GREEN}[OK]{RESET} Formato delimitado estándar -> {YELLOW}salidas/datos_csv{RESET}")
+print(f"   {GREEN}[OK]{RESET} Formato delimitado estándar -> {YELLOW}salidas/datos_csv{RESET}")
 
 print("-" * 60)
-print(f"✨ {BOLD}{GREEN}¡Archivos exportados exitosamente dentro de 'salidas/'!{RESET}")
+print(f" {BOLD}{GREEN}¡Archivos exportados exitosamente dentro de 'salidas/'!{RESET}")
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
-
----
-
-### Notas Metodológicas Críticas del Laboratorio
 
 * **`collect()` vs `take(n)`:** Recuerda que `.collect()` extrae la totalidad de los datos distribuidos en los nodos de ejecución y los centraliza en el programa Driver (tu máquina). Utilízalo únicamente con muestras reducidas. Para grandes volúmenes de registros en producción, utiliza `.take(n)` o `.first()`.
 * **Inmutabilidad:** Un RDD nunca es modificado in-place. Cualquier transformación (`map`, `filter`) genera una nueva instancia de RDD derivado en el grafo de linaje de ejecución.
+
+### Resultado esperado
+
+Se espera que el estudiante complete los pasos de la práctica y obtenga una salida coherente en la terminal o en los archivos generados, según corresponda al laboratorio.
