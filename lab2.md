@@ -57,7 +57,7 @@ print("="*40 + "\n")
 spark.stop()
 ```
 
-![lab2](../curso_python_spark/images/lab2_2.png)
+![lab2](../curso_python_spark/images/lab2_0.png)
 
 ---
 #### Paso 2. Configuración avanzada y control de recursos
@@ -87,7 +87,7 @@ print("="*40 + "\n")
 
 spark.stop()
 ```
-![lab2](../curso_python_spark/images/lab2_2.png)
+![lab2](../curso_python_spark/images/lab2_1.png)
 
 ---
 
@@ -157,7 +157,7 @@ print("="*50 + "\n")
 
 spark.stop()
 ```
-![lab2](../curso_python_spark/images/lab2_3.png)
+![lab2](../curso_python_spark/images/lab2_2.png)
 
 ---
 #### Paso 4. Preparar el entorno de datos local
@@ -177,7 +177,7 @@ echo -e "mes,meta_ventas,alcanzado\nEnero,100,105\nFebrero,150,140\nMarzo,200,21
 # 4. Crear otro archivo con 10 registros de ciudades y sus ventas totales
 echo -e "ciudad,ventas_totales,vendedores\nMadrid,5000,12\nBarcelona,4200,9\nValencia,2800,6\nSevilla,3100,7\nBilbao,2500,4\nZaragoza,1900,3\nMalaga,2900,5\nMurcia,1500,3\nPalma,2100,4\nLas_Palmas,1800,3" > data/dirtxt/marzo.txt
 ```
-![lab2](../curso_python_spark/images/lab2_4.png)
+![lab2](../curso_python_spark/images/lab2_3.png)
 
 ---
 
@@ -254,8 +254,8 @@ print()
 
 spark.stop()
 ```
-![lab2](../curso_python_spark/images/lab2_5.png)
 
+![lab2](../curso_python_spark/images/lab2_5.png)
 
 ---
 
