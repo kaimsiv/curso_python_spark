@@ -109,7 +109,7 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-![lab3](../curso_python_spark/images/lab4_2.png)
+![lab3](../curso_python_spark/images/lab3_2.png)
 
 
 ---
