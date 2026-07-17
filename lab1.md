@@ -83,7 +83,7 @@ Se usará Visual Studio Code para escribir y ejecutar de forma visual nuestros s
 2. Ir a la sección de **Extensiones** en la barra lateral izquierda (o presiona `Ctrl + Shift + X`).
 3. Buscar **Python** (desarrollada por Microsoft) y hacer clic en **Instalar**.
 
-![lab1](../curso_python_spark/images/lab1_3.png)
+![lab1](../curso_python_spark/images/lab1_4.png)
 
 
 #### Paso 6. Seleccionar el Intérprete de Python adecuado
@@ -95,7 +95,7 @@ Para evitar errores de importación de librerías dentro del editor:
 3. Escribir y seleccionar **`Python: Select Interpreter`**.
 4. Elegir el intérprete global del sistema (usualmente listado como `/usr/bin/python3` o **Python 3.12.x**).
 
-![lab1](../curso_python_spark/images/lab1_4.png)
+![lab1](../curso_python_spark/images/lab1_3.png)
 
 ---
 
