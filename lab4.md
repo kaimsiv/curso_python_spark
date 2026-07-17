@@ -46,7 +46,8 @@ echo -e "SalesOrderNumber,OrderDate,Country,Product,Quantity,Sales\nSO43659,2020
 # 3. Regenerar el archivo Products.csv (10 registros enlazados por nombre de producto)
 echo -e "ProductKey,Product,Category,Price\n1,Mountain Bike,Bikes,3399.99\n2,Helmet,Accessories,34.99\n3,Socks,Clothing,9.50\n4,Laptop,Components,1200.00\n5,Teclado,Accessories,45.00\n6,Monitor,Components,250.00\n7,Mouse,Accessories,15.50\n8,Impresora,Components,180.00\n9,Audifonos,Accessories,60.00\n10,Disco_Duro,Components,85.00" > data/Model/Products.csv
 ```
-
+![alt text](image-7.png)
+---
 #### Paso 2. Creación de vista temporal local a partir de una colección
 
 Crea el archivo `sql_vista_local.py`:
@@ -80,7 +81,7 @@ data = [
     ("Isabel", 26, 62000, "HR"),
     ("Jorge", 40, 75000, "Finance")
 ]
-columnas = ["name", "age", "salary", department"]
+columnas = ["name", "age", "salary", "department"]
 
 df = spark.createDataFrame(data, columnas)
 
@@ -96,7 +97,8 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-8.png)
+---
 #### Paso 3. Consultas SQL avanzadas, filtros y agregaciones desde archivos CSV
 
 Crea el archivo `sql_consultas_ventas.py`:
@@ -123,7 +125,7 @@ df = spark.read.csv("data/Sales.csv", inferSchema=True, header=True)
 df.createOrReplaceTempView("ventas")
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN}🇨🇦 1. FILTRO BÁSICO CONDICIONAL (Country = 'Canada'){RESET}")
+print(f"{BOLD}{CYAN} 1. FILTRO BÁSICO CONDICIONAL (Country = 'Canada'){RESET}")
 print("="*60)
 res_filtro = spark.sql("SELECT SalesOrderNumber, OrderDate, Country, Product, Sales FROM ventas WHERE Country = 'Canada'")
 res_filtro.show(10, truncate=False)
@@ -153,7 +155,7 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-9.png)
 ---
 
 ## Tarea 2. Operaciones CRUD con DataFrames (Simulación y Limitations)
@@ -206,6 +208,9 @@ spark.stop()
 
 ```
 
+![alt text](image-10.png)
+
+
 #### Paso 5. Simulación de DELETE (Exclusión mediante Cláusula WHERE)
 
 Crea el archivo `crud_delete.py`:
@@ -244,7 +249,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-
+![alt text](image-11.png)
 ---
 
 ## Tarea 3. Uso de vistas temporales globales (Multi-Sesión)
@@ -300,8 +305,7 @@ spark_principal.stop()
 spark_aislada.stop()
 ```
 
+---
 ### Resultado esperado
 
-![resultado](../curso_python_spark/images/lab4_resultado1.png)
----
-![resultado](../curso_python_spark/images/lab4_resultado2.png)
+![resultado](../curso_python_spark/images/lab4_resultado.png)

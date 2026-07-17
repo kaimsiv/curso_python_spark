@@ -31,6 +31,7 @@ Se describen los pasos requeridos para completar la práctica de forma ordenada 
 ```bash
 mkdir -p data/TotalSalesRed/
 ```
+![alt text](image.png)
 
 ### Paso 2. Generar los archivos CSV locales de prueba
 
@@ -49,7 +50,7 @@ echo -e "ID,Fecha,Cliente,Region,Pais,Cod1,Cod2,Prod,Cat,Tienda,Cantidad,Precio\
 # 4. Generar el archivo general Sales.csv en la raíz de data/ (10 registros para agregación por fechas)
 echo -e "ID,Fecha,Cliente,Region,Pais,Cod1,Cod2,Prod,Cat,Tienda,Cantidad,Precio\n3001,2026-07-01,C10,North,USA,M,N,Tablet,Tech,S1,3,400.00\n3002,2026-07-01,C11,North,USA,M,N,Cable,Tech,S1,5,10.00\n3003,2026-07-02,C12,South,MEX,M,N,Screen,Tech,S2,1,250.00\n3004,2026-07-02,C13,East,CAN,M,N,Router,Tech,S1,2,85.00\n3005,2026-07-02,C14,West,USA,M,N,Hub_USB,Tech,S3,6,30.00\n3006,2026-07-03,C15,North,USA,M,N,Battery,Tech,S2,4,45.00\n3007,2026-07-03,C16,South,MEX,M,N,Webcam,Tech,S1,2,75.00\n3008,2026-07-04,C17,East,CAN,M,N,Stand,Tech,S3,8,20.00\n3009,2026-07-04,C18,West,USA,M,N,Adapter,Tech,S2,10,15.00\n3010,2026-07-04,C19,North,USA,M,N,SSD_Ext,Tech,S1,1,110.00" > data/Sales.csv
 ```
-
+![alt text](image-2.png)
 ---
 
 ## Tarea 2. Aplicar Acciones de Conteo y Muestreo en un Archivo
@@ -121,7 +122,8 @@ print("="*60 + "\n")
 # Cerrar la sesión de Spark de forma limpia
 spark.stop()
 ```
-
+![alt text](image-3.png)
+---
 ### Paso 4. Ejecución
 
 * Guarda el archivo (`Ctrl + S`).
@@ -194,7 +196,8 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-4.png)
+---
 ### Paso 6. Ejecución
 
 * Ejecuta este script pulsando el botón **Play (▶)** y observa cómo se discriminan los registros truncados gracias al cálculo perezoso evaluado por las acciones de conteo.
@@ -278,7 +281,7 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-5.png)
 ---
 
 ## Tarea 5. Agregación Avanzada de Importes y Ventas Diarias

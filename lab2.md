@@ -57,6 +57,8 @@ print("="*40 + "\n")
 spark.stop()
 ```
 
+![alt text](image.png)
+---
 #### Paso 2. Configuración avanzada y control de recursos
 
 Si necesitas limitar el consumo de memoria del Driver o del Executor, o definir un número específico de hilos distribuidos, puedes pasar parámetros `.config()`. Crea el archivo `tarea1_avanzado.py`:
@@ -84,7 +86,7 @@ print("="*40 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-1.png)
 ---
 
 ## Tarea 2. Crear un RDD a partir de conjuntos en memoria
@@ -153,8 +155,29 @@ print("="*50 + "\n")
 
 spark.stop()
 ```
+![alt text](image-2.png)
+---
+#### Paso 4. Preparar el entorno de datos local
 
-#### Paso 4. RDD a partir de Colecciones (Listas y Tuplas de Python)
+Asegúrate de estar en tu ruta actual (Ejemplo: `~/1python/netec`) en la terminal de VS Code y ejecuta los siguientes comandos para estructurar la carpeta interna de datos de prueba:
+
+```bash
+# 1. Crear la estructura de carpetas
+mkdir -p data/dirtxt
+
+# 2. Crear un archivo de ventas más grande (10 registros con ID, Producto y Cantidad)
+echo -e "id,producto,cantidad\n1,Laptop,15\n2,Teclado,45\n3,Impresora,8\n4,Memoria,120\n5,Monitor,22\n6,Mouse,85\n7,Audifonos,60\n8,Disco_Duro,40\n9,Cargador,30\n10,Cable_HDMI,95" > data/salesrpt.txt
+
+# 3. Crear el reporte del primer trimestre (10 meses/registros simulados con metas)
+echo -e "mes,meta_ventas,alcanzado\nEnero,100,105\nFebrero,150,140\nMarzo,200,210\nAbril,250,245\nMayo,180,190\nJunio,220,230\nJulio,170,165\nAgosto,210,215\nSeptiembre,190,185\nOctubre,240,250" > data/dirtxt/enero.txt
+
+# 4. Crear otro archivo con 10 registros de ciudades y sus ventas totales
+echo -e "ciudad,ventas_totales,vendedores\nMadrid,5000,12\nBarcelona,4200,9\nValencia,2800,6\nSevilla,3100,7\nBilbao,2500,4\nZaragoza,1900,3\nMalaga,2900,5\nMurcia,1500,3\nPalma,2100,4\nLas_Palmas,1800,3" > data/dirtxt/marzo.txt
+```
+![alt text](image-3.png)
+---
+
+#### Paso 5. RDD a partir de Colecciones (Listas y Tuplas de Python)
 
 Crea un archivo llamado `tarea2_listas.py`:
 
@@ -227,108 +250,13 @@ print()
 
 spark.stop()
 ```
+![alt text](image-4.png)
 
 ---
 
-## Tarea 3. Crear un RDD a partir de fuentes externas (Archivos)
+## Tarea 3. Inspeccionar y parsear un RDD estructurado (CSV)
 
-#### Paso 5. Preparar el entorno de datos local
-
-Asegúrate de estar en tu ruta actual `~/1python/netec` en la terminal de VS Code y ejecuta los siguientes comandos para estructurar la carpeta interna de datos de prueba:
-
-```bash
-# 1. Crear la estructura de carpetas
-mkdir -p data/dirtxt
-
-# 2. Crear un archivo de ventas más grande (10 registros con ID, Producto y Cantidad)
-echo -e "id,producto,cantidad\n1,Laptop,15\n2,Teclado,45\n3,Impresora,8\n4,Memoria,120\n5,Monitor,22\n6,Mouse,85\n7,Audifonos,60\n8,Disco_Duro,40\n9,Cargador,30\n10,Cable_HDMI,95" > data/salesrpt.txt
-
-# 3. Crear el reporte del primer trimestre (10 meses/registros simulados con metas)
-echo -e "mes,meta_ventas,alcanzado\nEnero,100,105\nFebrero,150,140\nMarzo,200,210\nAbril,250,245\nMayo,180,190\nJunio,220,230\nJulio,170,165\nAgosto,210,215\nSeptiembre,190,185\nOctubre,240,250" > data/dirtxt/enero.txt
-
-# 4. Crear otro archivo con 10 registros de ciudades y sus ventas totales
-echo -e "ciudad,ventas_totales,vendedores\nMadrid,5000,12\nBarcelona,4200,9\nValencia,2800,6\nSevilla,3100,7\nBilbao,2500,4\nZaragoza,1900,3\nMalaga,2900,5\nMurcia,1500,3\nPalma,2100,4\nLas_Palmas,1800,3" > data/dirtxt/marzo.txt
-```
-
-#### Paso 6. Lectura usando rutas relativas
-
-Crea un archivo llamado `tarea3_archivos.py` en tu VS Code:
-
-```python
-import os
-os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-17-openjdk-amd64"
-import findspark
-findspark.init()
-
-from pyspark.sql import SparkSession
-
-# Inicializar Spark
-spark = SparkSession.builder.master("local[*]").appName("RDDArchivos").getOrCreate()
-sc = spark.sparkContext
-
-# --- Configuración para limpiar la pantalla de avisos innecesarios ---
-sc.setLogLevel("ERROR")
-
-# Estilos visuales para la terminal
-CYAN = "\033[96m"
-GREEN = "\033[92m"
-YELLOW = "\033[93m"
-BOLD = "\033[1m"
-RESET = "\033[0m"
-
-
-# ==========================================
-# 1. Leer un único archivo plano (salesrpt.txt)
-# ==========================================
-text_rdd = sc.textFile("data/salesrpt.txt")
-
-print("\n" + "="*50)
-print(f"{BOLD}{CYAN} SECCIÓN 1: CONTENIDO DEL ARCHIVO DE VENTAS{RESET}")
-print("="*50)
-
-# Imprimir fila por fila para que se vea como una tabla real
-for linea in text_rdd.collect():
-    print(f"  {linea}")
-
-print("-" * 50)
-print(f" {BOLD}Número total de líneas:{RESET} {YELLOW}{text_rdd.count()}{RESET}")
-print("="*50)
-
-
-# ==========================================
-# 2. Leer múltiples archivos (*.txt)
-# ==========================================
-multi_rdd = sc.textFile("data/dirtxt/*.txt")
-
-print("\n" + "="*50)
-print(f"{BOLD}{GREEN} SECCIÓN 2: CONTENIDO UNIFICADO DE LA CARPETA{RESET}")
-print("="*50)
-
-# Imprimir ordenadamente todas las líneas consolidadas
-for linea in multi_rdd.collect():
-    print(f"  {linea}")
-
-print("-" * 50)
-print(f" {BOLD}Total líneas agregadas de la carpeta:{RESET} {YELLOW}{multi_rdd.count()}{RESET}")
-print("="*50)
-
-
-# ==========================================
-# 3. Vista previa controlada (Muestra)
-# ==========================================
-print(f"\n {BOLD}Muestra de las primeras 2 líneas procesadas:{RESET}")
-for linea in multi_rdd.take(2):
-    print(f"    > {linea}")
-print()
-
-spark.stop()
-```
-
----
-
-## Tarea 4. Inspeccionar y parsear un RDD estructurado (CSV)
-
-#### Paso 7. Generar el CSV de prueba en tu directorio actual
+#### Paso 6. Generar el CSV de prueba en tu directorio actual
 
 Ejecuta esto en tu terminal integrada para añadir el archivo delimitado directamente a tu subcarpeta `data/`:
 
@@ -336,7 +264,9 @@ Ejecuta esto en tu terminal integrada para añadir el archivo delimitado directa
 echo -e "id,cliente,edad\n1,Alicia,25\n2,Bernardo,30\n3,Carla,35\n4,Daniel,28\n5,Elena,42\n6,Fernando,19\n7,Gabriela,31\n8,Hugo,50\n9,Isabel,24\n10,Jorge,37" > data/clientes.csv
 ```
 
-#### Paso 8. Parseo funcional del RDD
+![alt text](image-6.png)
+---
+#### Paso 7. Parseo funcional del RDD
 
 Crea un archivo llamado `tarea4_parseo.py` en VS Code:
 
@@ -399,20 +329,21 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-7.png)
 ---
 
-## Tarea 5. Persistencia y Exportación de Datos (Guardar RDDs)
+## Tarea 4. Persistencia y Exportación de Datos (Guardar RDDs)
 
-#### Paso 9. Configuración de almacenamiento local
+#### Paso 8. Configuración de almacenamiento local
 
 Crea la carpeta de salidas directamente en tu directorio de trabajo actual:
 
 ```bash
 mkdir -p salidas/
 ```
-
-#### Paso 10. Conversión a DataFrame para formatos estructurados
+![alt text](image-8.png)
+---
+#### Paso 9. Conversión a DataFrame para formatos estructurados
 
 Crea el script `tarea5_exportar.py`:
 

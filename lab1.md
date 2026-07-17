@@ -45,6 +45,8 @@ sudo update-alternatives --config java
 
 *Si aparece una lista de opciones, escribir el número correspondiente a `java-17-openjdk-amd64` y presionar **Enter**.*
 
+![alt text](image-1.png)
+
 #### Paso 3. Instalar PIP3
 
 Instalar las herramientas de empaquetado de Python ejecutando:
@@ -66,8 +68,10 @@ Ejecutar el siguiente comando en la terminal utilizando la bandera `--break-syst
 ```bash
 pip3 install pyspark findspark --break-system-packages
 ```
----
 
+
+![alt text](image-2.png)
+---
 ### Tarea 3. Configuración del entorno de desarrollo en VS Code
 
 Se usará Visual Studio Code para escribir y ejecutar de forma visual nuestros scripts de datos.
@@ -78,6 +82,8 @@ Se usará Visual Studio Code para escribir y ejecutar de forma visual nuestros s
 2. Ir a la sección de **Extensiones** en la barra lateral izquierda (o presiona `Ctrl + Shift + X`).
 3. Buscar **Python** (desarrollada por Microsoft) y hacer clic en **Instalar**.
 
+![alt text](image-4.png)
+
 #### Paso 6. Seleccionar el Intérprete de Python adecuado
 
 Para evitar errores de importación de librerías dentro del editor:
@@ -86,6 +92,8 @@ Para evitar errores de importación de librerías dentro del editor:
 2. Presionar la combinación de teclas **`Ctrl + Shift + P`** para abrir la paleta de comandos.
 3. Escribir y seleccionar **`Python: Select Interpreter`**.
 4. Elegir el intérprete global del sistema (usualmente listado como `/usr/bin/python3` o **Python 3.12.x**).
+
+![alt text](image-3.png)
 ---
 
 ### Tarea 4. Creación y ejecución del Script de Verificación

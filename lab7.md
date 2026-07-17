@@ -35,7 +35,9 @@ echo -e "id,customer_name\n1,CustomerA\n2,CustomerB\n3,CustomerC\n4,CustomerD\n5
 echo -e "id,date,store,country,product_id,customer_id,product_name,qty,price,tax,amount\n1,2026-07-09,Store1,Mexico,101,1,ProductA,2,50.0,0.15,100.0\n2,2026-07-09,Store2,Canada,102,2,ProductB,1,150.0,0.15,150.0\n3,2026-07-10,Store1,Mexico,103,3,ProductC,5,20.0,0.15,100.0\n4,2026-07-10,Store3,USA,101,4,ProductA,1,50.0,0.15,50.0\n5,2026-07-11,Store2,Canada,104,5,ProductD,3,30.0,0.15,90.0\n6,2026-07-11,Store1,Mexico,102,6,ProductB,2,150.0,0.15,300.0\n7,2026-07-12,Store3,USA,105,7,ProductE,10,12.0,0.15,120.0\n8,2026-07-12,Store2,Canada,103,8,ProductC,4,20.0,0.15,80.0\n9,2026-07-13,Store1,Mexico,106,9,ProductF,1,200.0,0.15,200.0\n10,2026-07-13,Store3,USA,104,10,ProductD,2,30.0,0.15,60.0" > data/Sales.csv
 
 ```
+![alt text](image.png)
 
+![alt text](image-1.png)
 ---
 
 
@@ -90,8 +92,10 @@ spark.stop()
 
 ```
 
-* **Explicación:** `sc.parallelize(range(10), 4)` fragmenta una lista de 10 elementos distribuyéndola en 4 particiones internas. El método `glom()` agrupa los elementos de cada partición en una lista para su visualización.
+* `sc.parallelize(range(10), 4)` fragmenta una lista de 10 elementos distribuyéndola en 4 particiones internas. El método `glom()` agrupa los elementos de cada partición en una lista para su visualización.
 
+![alt text](image-2.png)
+---
 ### Paso 2. Cargar un archivo CSV forzando un mínimo de particiones
 
 Crea un archivo llamado `tarea1_cargar_csv.py` y ejecútalo desde VS Code.
@@ -145,6 +149,8 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+
+![alt text](image-3.png)
 
 > **Nota:** El número real de particiones puede ser mayor que 4 si el archivo físico en el disco es de gran tamaño, ya que el parámetro `minPartitions` actúa como una restricción mínima, no como un límite máximo estricto.
 
@@ -205,6 +211,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-4.png)
 
 ---
 
@@ -274,6 +281,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-5.png)
 
 ---
 
@@ -327,6 +335,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-6.png)
 
 ---
 
@@ -384,6 +393,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-7.png)
 
 ---
 
@@ -453,7 +463,9 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-8.png)
 
+---
 ### Paso 4. Filtrado rápido utilizando listas transmitidas
 
 Crea el archivo `tarea6_broadcast_lista.py` en VS Code.
@@ -507,6 +519,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-9.png)
 
 ---
 
@@ -572,6 +585,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-10.png)
 
 ---
 
@@ -623,6 +637,9 @@ spark.stop()
 
 ```
 
+![alt text](image-11.png)
+
+---
 ### Paso 6. Sumar métricas de RDD y captura de inconsistencias de datos
 
 Crea el archivo `tarea8_inconsistencias.py` en tu VS Code.

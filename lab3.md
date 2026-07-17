@@ -49,7 +49,8 @@ echo -e '[\n  {"Nombre": "Alfonso", "Edad": 25, "Ciudad": "Abejorral"},\n  {"Nom
 # 4. Crear un parquet base usando 10 registros inmobiliarios
 python3 -c "import os; os.environ['JAVA_HOME']='/usr/lib/jvm/java-17-openjdk-amd64'; import findspark; findspark.init(); from pyspark.sql import SparkSession; s=SparkSession.builder.getOrCreate(); datos=[('Casa Centro', 250000), ('Dpto Sur', 120000), ('Casa Norte', 310000), ('Dpto Este', 95000), ('Penthouse', 550000), ('Local Comercial', 420000), ('Terreno Campo', 85000), ('Duplex Playa', 280000), ('Oficina Inversion', 165000), ('Chalet Bosque', 210000)]; s.createDataFrame(datos, ['Propiedad', 'Precio']).write.mode('overwrite').parquet('data/house-price.parquet'); s.stop()"
 ```
-
+![alt text](image.png)
+---
 #### Paso 2. Crear DataFrame desde una Lista y un Diccionario
 
 Crea el archivo `df_creacion_memoria.py`:
@@ -107,7 +108,8 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-1.png)
+---
 #### Paso 3. Crear DataFrame desde fuentes de archivos externos (CSV, Parquet, JSON)
 
 Crea el archivo `df_creacion_archivos.py`:
@@ -153,7 +155,8 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-2.png)
+![alt text](image-3.png)
 ---
 
 ## Tarea 2. Trabajando con DataFrames (Transformaciones)
@@ -204,7 +207,8 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-
+![alt text](image-4.png)
+---
 #### Paso 5. Agregar columnas constantes (`lit`), calculadas (`expr`) y múltiples (`withColumns`)
 
 Crea el archivo `df_columnas_calculadas.py`:
@@ -267,7 +271,8 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-5.png)
+![alt text](image-6.png)
 ---
 
 ## Tarea 3. Salvar DataFrames y Coalesce (Reducción de particiones)

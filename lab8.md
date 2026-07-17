@@ -4,9 +4,7 @@
 
 #### Objetivo
 
-Al finalizar la práctica, se espera que el estudiante sea capaz de:
-
-* Aplicar agregaciones, agrupaciones y relaciones de tablas mediante Spark SQL en un entorno de desarrollo local.
+Al finalizar la práctica, serás capaz de aplicar agregaciones, agrupaciones y relaciones de tablas mediante Spark SQL en un entorno de desarrollo local.
 
 #### Objetivo visual
 
@@ -57,11 +55,10 @@ echo -e "Year,TotalSales\n2022,640000" > data/TotalSales/Sales2022.csv
 echo -e "Year,TotalSales\n2023,720000" > data/TotalSales/Sales2023.csv
 echo -e "Year,TotalSales\n2024,810000" > data/TotalSales/Sales2024.csv
 echo -e "Year,TotalSales\n2025,890000" > data/TotalSales/Sales2025.csv
-
 ```
 
+![alt text](image.png)
 ---
-
 
 ### Instrucciones
 
@@ -116,6 +113,8 @@ spark.stop()
 
 ```
 
+![alt text](image-1.png)
+
 ### Paso 2. Agrupar por más de un campo
 
 1. Crea un archivo nuevo en VS Code llamado `agrupacion_multiple.py`.
@@ -159,7 +158,9 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-2.png)
 
+---
 ### Paso 3. Aplicar múltiples funciones de agregación en simultáneo
 
 1. Crea un archivo nuevo en VS Code llamado `multiples_agregaciones.py`.
@@ -205,7 +206,9 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-3.png)
 
+---
 ### Paso 4. Filtrado de agrupaciones usando HAVING
 
 1. Crea un archivo nuevo en VS Code llamado `filtrado_having.py`.
@@ -249,7 +252,9 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-4.png)
 
+---
 ### Paso 5. Agregación global sin agrupación
 
 1. Crea un archivo nuevo en VS Code llamado `agregacion_global.py`.
@@ -291,6 +296,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-5.png)
 
 ---
 
@@ -351,6 +357,11 @@ spark.stop()
 
 ```
 
+![alt text](image-6.png)
+
+
+
+---
 ### Paso 7. Evaluación de comportamientos de cruce (Datos Inline)
 
 Para enriquecer esta comparación a 10 ejemplos robustos por cada tipo de join, utilizaremos colecciones completas generadas directamente en memoria.
@@ -430,7 +441,10 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
+![alt text](image-7.png)
+![alt text](image-8.png)
 
+---
 ### Paso 8. Unión Vertical con UNION
 
 1. Crea un archivo final en VS Code llamado `union_historicos.py`.

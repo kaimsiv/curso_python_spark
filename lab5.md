@@ -12,6 +12,7 @@ Al finalizar la práctica, se espera que el estudiante sea capaz de:
 ### Objetivo visual
 
 Se espera que el estudiante observe de forma clara la relación entre la actividad propuesta y el resultado que debe obtener al ejecutar los pasos del laboratorio.
+
 ### Duración aproximada
 
 * 60 minutos
@@ -28,13 +29,13 @@ Se espera que el estudiante observe de forma clara la relación entre la activid
 
 #### Paso 1. Preparación de la estructura de datos local (Blindaje contra errores)
 
-Antes de ejecutar los scripts en VS Code, abre la terminal integrada y ejecuta los siguientes comandos Bash. Esto creará la carpeta contenedora y generará tanto el archivo CSV como el archivo Parquet con un mínimo de 10 registros iniciales de prueba para garantizar una ejecución local fluida y sin errores de rutas:
+Antes de ejecutar los scripts en VS Code, abre la terminal integrada y ejecuta los siguientes comandos Bash. Esto creará la carpeta contenedora y generará todos los archivos de prueba (`Customers.csv`, `Sales.csv` y el archivo Parquet) con un mínimo de 10 registros iniciales para garantizar una ejecución local fluida y sin errores de rutas en los siguientes pasos:
 
 ```bash
 # 1. Crear el directorio de datos locales
 mkdir -p data/Model
 
-# 2. Generar el archivo CSV de clientes (10 registros con estructura completa)
+# 2. Generar el archivo CSV de clientes
 echo "ID,Name,Address,Gender,Status" > data/Model/Customers.csv
 echo "1,Alicia,Calle 123,F,Activo" >> data/Model/Customers.csv
 echo "2,Bernardo,Avenida 45,M,Inactivo" >> data/Model/Customers.csv
@@ -47,7 +48,33 @@ echo "8,Hugo,Esquina Sur,M,Inactivo" >> data/Model/Customers.csv
 echo "9,Isabel,Bulevar Este,F,Activo" >> data/Model/Customers.csv
 echo "10,Jorge,Valle Verde,M,Activo" >> data/Model/Customers.csv
 
-# 3. Generar el archivo Parquet de prueba con 10 propiedades inmobiliarias
+# 3a. Generar el archivo CSV de Ventas (Para el Paso 2 - Estructura de Productos)
+echo "SalesOrderNumber,OrderDate,Country,Product,Quantity,Sales" > data/Sales_Productos.csv
+echo "SO43659,2020-01-15,Canada,Mountain Bike,1,3500.00" >> data/Sales_Productos.csv
+echo "SO43660,2021-06-20,Germany,Helmet,3,3400.00" >> data/Sales_Productos.csv
+echo "SO43661,2021-07-11,Canada,Socks,2,3200.00" >> data/Sales_Productos.csv
+echo "SO43662,2022-03-05,France,Jersey,1,150.00" >> data/Sales_Productos.csv
+echo "SO43663,2022-04-12,Canada,Laptop,1,1200.00" >> data/Sales_Productos.csv
+echo "SO43664,2023-05-18,Germany,Teclado,5,45.00" >> data/Sales_Productos.csv
+echo "SO43665,2023-08-22,France,Monitor,2,250.00" >> data/Sales_Productos.csv
+echo "SO43666,2024-01-10,Canada,Mouse,10,15.50" >> data/Sales_Productos.csv
+echo "SO43667,2024-03-15,Germany,Impresora,1,180.00" >> data/Sales_Productos.csv
+echo "SO43668,2025-02-28,France,Audifonos,4,60.00" >> data/Sales_Productos.csv
+
+# 3b. Generar el archivo CSV de Ventas (Para la Tarea 4 - Estructura de Clientes)
+echo "SalesOrderNumber,OrderDate,Customer,Country,TotalCost" > data/Sales_Clientes.csv
+echo "SO43659,2026-07-01,Gustavo,United States,1000" >> data/Sales_Clientes.csv
+echo "SO43660,2026-07-02,Catherine,Australia,2500" >> data/Sales_Clientes.csv
+echo "SO43661,2026-07-03,Fernando,Canada,1200" >> data/Sales_Clientes.csv
+echo "SO43662,2026-07-04,Alicia,France,3100" >> data/Sales_Clientes.csv
+echo "SO43663,2026-07-05,Bernardo,Germany,1500" >> data/Sales_Clientes.csv
+echo "SO43664,2026-07-06,Gabriela,Canada,1800" >> data/Sales_Clientes.csv
+echo "SO43665,2026-07-07,Hugo,France,900" >> data/Sales_Clientes.csv
+echo "SO43666,2026-07-08,Isabel,Germany,2200" >> data/Sales_Clientes.csv
+echo "SO43667,2026-07-09,Jorge,Australia,1300" >> data/Sales_Clientes.csv
+echo "SO43668,2026-07-10,Elena,United States,4500" >> data/Sales_Clientes.csv
+
+# 4. Generar el archivo Parquet de prueba con 10 propiedades inmobiliarias
 cat << 'EOF' > generar_parquet_inicial.py
 import os
 os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-17-openjdk-amd64"
@@ -88,8 +115,9 @@ EOF
 
 python3 generar_parquet_inicial.py
 rm generar_parquet_inicial.py
-
 ```
+![alt text](image-12.png)
+---
 
 #### Paso 2. RDD con esquema desde CSV
 
@@ -114,11 +142,12 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE_DIR, "data", "Sales.csv")
+# AQUÍ ESTÁ EL CAMBIO: Apuntando al archivo correcto
+DATA_FILE = os.path.join(BASE_DIR, "data", "Sales_Productos.csv")
 OUTPUT_DIR = os.path.join(BASE_DIR, "salidas", "reporte_completo")
 
 if not os.path.exists(DATA_FILE):
-    raise FileNotFoundError(f"El archivo de ventas no existe: {DATA_FILE}. Genera data/Sales.csv primero.")
+    raise FileNotFoundError(f"El archivo de ventas no existe: {DATA_FILE}. Genera la data primero.")
 
 # Cargar y preparar datos
 df = spark.read.csv(DATA_FILE, inferSchema=True, header=True)
@@ -157,8 +186,11 @@ if os.path.exists(OUTPUT_DIR):
     os.rename(ruta_origen_completa, ruta_destino_final)
     print(f"   {GREEN}[COMPLETO]{RESET} Archivo final listo en: {YELLOW}{ruta_destino_final}{RESET}")
 print("="*60 + "\n")
-```
 
+```
+![alt text](image-1.png)
+![alt text](image-2.png)
+---
 #### Paso 3. Leer desde un archivo Parquet local con esquema
 
 Crea un archivo llamado `02_parquet_rdd.py` en VS Code para procesar el origen Parquet y mapearlo de vuelta a una estructura RDD:
@@ -222,10 +254,10 @@ df.printSchema()
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
-
->  **Recomendación:** Utilizar DataFrames cuando sea posible. Si bien es factible crear RDDs con esquemas desde archivos Parquet, se recomienda utilizar DataFrames directamente, ya que ofrecen un mejor rendimiento y funcionalidades optimizadas para el procesamiento de datos estructurados.
+![alt text](image-3.png)
+![alt text](image-4.png)
+> **Recomendación:** Utilizar DataFrames cuando sea posible. Si bien es factible crear RDDs con esquemas desde archivos Parquet, se recomienda utilizar DataFrames directamente, ya que ofrecen un mejor rendimiento y funcionalidades optimizadas para el procesamiento de datos estructurados.
 
 ---
 
@@ -284,9 +316,8 @@ for token, count in resultado:
 print("="*60 + "\n")
 
 spark.stop()
-
 ```
-
+![alt text](image-5.png)
 ---
 
 ### Tarea 3. Aplicando transformaciones comunes
@@ -345,8 +376,10 @@ for item in rdd_parseado.collect():
 print("="*60 + "\n")
 
 spark.stop()
-```
 
+```
+![alt text](image-6.png)
+---
 #### 2. Función `flatMap`
 
 A diferencia de `map`, `flatMap` aplica la función sobre cada elemento pero "aplana" cualquier colección o lista resultante en elementos individuales independientes en el RDD de salida.
@@ -395,8 +428,10 @@ print(f"   Lista Completa: {coleccion_plana}")
 print("="*60 + "\n")
 
 spark.stop()
-```
 
+```
+![alt text](image-7.png)
+---
 #### 3. Función `filter`
 
 Se utiliza para seleccionar únicamente los elementos que cumplen con una condición específica (donde la evaluación resulta en `True`). Sintaxis: `nuevo_rdd = rdd.filter(función)`.
@@ -457,8 +492,10 @@ for item in rdd_filtrado_complejo.collect():
 print("="*60 + "\n")
 
 spark.stop()
-```
 
+```
+![alt text](image-8.png)
+---
 #### 4. Función `distinct`
 
 Devuelve un nuevo RDD eliminando los registros duplicados a través de una reorganización interna de particiones (*shuffle*).
@@ -514,7 +551,8 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-
+![alt text](image-9.png)
+---
 #### 5. Función `union`, `intersection`, `subtract` y `cartesian`
 
 Operaciones aplicadas entre dos RDDs cuyos elementos deben ser preferentemente del mismo tipo. Crea el archivo `08_operaciones_multi_rdd.py` cargado con las colecciones completas de los 10 elementos creados inicialmente.
@@ -551,8 +589,10 @@ print(f"   Cartesian (Muestra de combinaciones RDD1 con Letras): \n     -> {rdd1
 print("="*60 + "\n")
 
 spark.stop()
-```
 
+```
+![alt text](image-10.png)
+---
 #### 6. Agregaciones Clave-Valor (`groupByKey`, `reduceByKey`, `sortByKey`)
 
 Transformaciones específicas para RDDs estructurados en pares `(Clave, Valor)`. Crea el archivo `09_agregaciones_clave_valor.py` alimentado con las 10 transacciones creadas incialmente:
@@ -608,32 +648,16 @@ print(f"   Orden Descendente: {total_ventas.sortByKey(ascending=False).collect()
 print("="*60 + "\n")
 
 spark.stop()
+
 ```
+![alt text](image-11.png)
 
 ---
 
 ### Tarea 4. Filtrado de columnas y conversión de tipos
 
-#### Paso 4. Preparación del Archivo Local de Ventas
+#### Paso 4. Ejecución del script de Proyección y Conversión
 
-Ejecuta la siguiente instrucción en tu terminal integrada para generar el archivo `Sales.csv` enriquecido con exactamente 10 registros válidos antes de procesar las selecciones de campos:
-
-```bash
-mkdir -p data
-echo "SalesOrderNumber,OrderDate,Customer,Country,TotalCost" > data/Sales.csv
-echo "SO43659,2026-07-01,Gustavo,United States,1000" >> data/Sales.csv
-echo "SO43660,2026-07-02,Catherine,Australia,2500" >> data/Sales.csv
-echo "SO43661,2026-07-03,Fernando,Canada,1200" >> data/Sales.csv
-echo "SO43662,2026-07-04,Alicia,France,3100" >> data/Sales.csv
-echo "SO43663,2026-07-05,Bernardo,Germany,1500" >> data/Sales.csv
-echo "SO43664,2026-07-06,Gabriela,Canada,1800" >> data/Sales.csv
-echo "SO43665,2026-07-07,Hugo,France,900" >> data/Sales.csv
-echo "SO43666,2026-07-08,Isabel,Germany,2200" >> data/Sales.csv
-echo "SO43667,2026-07-09,Jorge,Australia,1300" >> data/Sales.csv
-echo "SO43668,2026-07-10,Elena,United States,4500" >> data/Sales.csv
-```
-
-#### Paso 5. Ejecución del script de Proyección y Conversión
 
 Crea el archivo `10_filtrado_y_tipos.py`. Este script recopila tanto el enfoque de DataFrames usando `.select()` como el método puro de RDD usando `.map()` con índices para aislar las columnas deseadas y realizar los casteos a tipos numéricos con 10 registros para cada flujo de evaluación:
 
@@ -655,7 +679,8 @@ BOLD = "\033[1m"
 RESET = "\033[0m"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE_DIR, "data", "Sales.csv")
+# AQUÍ ESTÁ EL CAMBIO: Apuntando al archivo correcto
+DATA_FILE = os.path.join(BASE_DIR, "data", "Sales_Clientes.csv")
 
 if not os.path.exists(DATA_FILE):
     raise FileNotFoundError(f"No existe el archivo: {DATA_FILE}")
@@ -697,6 +722,7 @@ for registro in rdd_convertido.collect():
 print("="*60 + "\n")
 
 spark.stop()
+
 ```
 
 ### Resultado esperado
