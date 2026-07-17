@@ -57,7 +57,7 @@ print("="*40 + "\n")
 spark.stop()
 ```
 
-![lab2](../curso_python_spark/images/lab2_1.png)
+![lab2](../curso_python_spark/images/lab2_2.png)
 
 ---
 #### Paso 2. Configuración avanzada y control de recursos
