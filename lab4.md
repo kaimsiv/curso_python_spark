@@ -46,7 +46,9 @@ echo -e "SalesOrderNumber,OrderDate,Country,Product,Quantity,Sales\nSO43659,2020
 # 3. Regenerar el archivo Products.csv (10 registros enlazados por nombre de producto)
 echo -e "ProductKey,Product,Category,Price\n1,Mountain Bike,Bikes,3399.99\n2,Helmet,Accessories,34.99\n3,Socks,Clothing,9.50\n4,Laptop,Components,1200.00\n5,Teclado,Accessories,45.00\n6,Monitor,Components,250.00\n7,Mouse,Accessories,15.50\n8,Impresora,Components,180.00\n9,Audifonos,Accessories,60.00\n10,Disco_Duro,Components,85.00" > data/Model/Products.csv
 ```
-![alt text](image-7.png)
+
+![lab4](../curso_python_spark/images/lab4_1.png)
+
 ---
 #### Paso 2. Creación de vista temporal local a partir de una colección
 
@@ -97,7 +99,10 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-![alt text](image-8.png)
+
+![lab4](../curso_python_spark/images/lab4_2.png)
+
+
 ---
 #### Paso 3. Consultas SQL avanzadas, filtros y agregaciones desde archivos CSV
 
@@ -155,7 +160,10 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-![alt text](image-9.png)
+
+![lab4](../curso_python_spark/images/lab4_3.png)
+
+
 ---
 
 ## Tarea 2. Operaciones CRUD con DataFrames (Simulación y Limitations)
@@ -208,7 +216,7 @@ spark.stop()
 
 ```
 
-![alt text](image-10.png)
+![lab4](../curso_python_spark/images/lab4_4.png)
 
 
 #### Paso 5. Simulación de DELETE (Exclusión mediante Cláusula WHERE)
@@ -249,7 +257,10 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-11.png)
+
+![lab4](../curso_python_spark/images/lab4_5.png)
+
+
 ---
 
 ## Tarea 3. Uso de vistas temporales globales (Multi-Sesión)

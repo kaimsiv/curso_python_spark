@@ -57,7 +57,8 @@ print("="*40 + "\n")
 spark.stop()
 ```
 
-![alt text](image.png)
+![lab2](../curso_python_spark/images/lab2_1.png)
+
 ---
 #### Paso 2. Configuración avanzada y control de recursos
 
@@ -86,7 +87,8 @@ print("="*40 + "\n")
 
 spark.stop()
 ```
-![alt text](image-1.png)
+![lab2](../curso_python_spark/images/lab2_2.png)
+
 ---
 
 ## Tarea 2. Crear un RDD a partir de conjuntos en memoria
@@ -155,7 +157,8 @@ print("="*50 + "\n")
 
 spark.stop()
 ```
-![alt text](image-2.png)
+![lab2](../curso_python_spark/images/lab2_3.png)
+
 ---
 #### Paso 4. Preparar el entorno de datos local
 
@@ -174,7 +177,8 @@ echo -e "mes,meta_ventas,alcanzado\nEnero,100,105\nFebrero,150,140\nMarzo,200,21
 # 4. Crear otro archivo con 10 registros de ciudades y sus ventas totales
 echo -e "ciudad,ventas_totales,vendedores\nMadrid,5000,12\nBarcelona,4200,9\nValencia,2800,6\nSevilla,3100,7\nBilbao,2500,4\nZaragoza,1900,3\nMalaga,2900,5\nMurcia,1500,3\nPalma,2100,4\nLas_Palmas,1800,3" > data/dirtxt/marzo.txt
 ```
-![alt text](image-3.png)
+![lab2](../curso_python_spark/images/lab2_4.png)
+
 ---
 
 #### Paso 5. RDD a partir de Colecciones (Listas y Tuplas de Python)
@@ -250,7 +254,8 @@ print()
 
 spark.stop()
 ```
-![alt text](image-4.png)
+![lab2](../curso_python_spark/images/lab2_5.png)
+
 
 ---
 
@@ -264,7 +269,8 @@ Ejecuta esto en tu terminal integrada para añadir el archivo delimitado directa
 echo -e "id,cliente,edad\n1,Alicia,25\n2,Bernardo,30\n3,Carla,35\n4,Daniel,28\n5,Elena,42\n6,Fernando,19\n7,Gabriela,31\n8,Hugo,50\n9,Isabel,24\n10,Jorge,37" > data/clientes.csv
 ```
 
-![alt text](image-6.png)
+![lab2](../curso_python_spark/images/lab2_6.png)
+
 ---
 #### Paso 7. Parseo funcional del RDD
 
@@ -329,7 +335,8 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-![alt text](image-7.png)
+![lab2](../curso_python_spark/images/lab2_7.png)
+
 ---
 
 ## Tarea 4. Persistencia y Exportación de Datos (Guardar RDDs)
@@ -341,7 +348,8 @@ Crea la carpeta de salidas directamente en tu directorio de trabajo actual:
 ```bash
 mkdir -p salidas/
 ```
-![alt text](image-8.png)
+![lab2](../curso_python_spark/images/lab2_8.png)
+
 ---
 #### Paso 9. Conversión a DataFrame para formatos estructurados
 

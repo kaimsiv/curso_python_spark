@@ -4,48 +4,39 @@ import findspark
 findspark.init()
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import broadcast
 
-spark = SparkSession.builder \
-    .appName("OptimizacionAvanzadaYSaltas") \
-    .master("local[*]") \
-    .getOrCreate()
-
-# Ajustar nivel a ERROR para mantener la terminal impecable
-spark.sparkContext.setLogLevel("ERROR")
+# 1. Inicializar la Sesión de Spark Primaria (Contexto de Carga)
+spark_principal = SparkSession.builder.appName("SesionPrincipal").getOrCreate()
+spark_principal.sparkContext.setLogLevel("ERROR")
 
 CYAN = "\033[96m"
 GREEN = "\033[92m"
-YELLOW = "\033[93m"
 BOLD = "\033[1m"
 RESET = "\033[0m"
 
-# Leer desde rutas relativas locales
-df_usuarios = spark.read.csv("data/data.csv", header=True, inferSchema=True)
-df_zonas = spark.read.csv("data/data2.csv", header=True, inferSchema=True)
+df_productos = spark_principal.read.csv("data/Model/Products.csv", inferSchema=True, header=True)
 
 print("\n" + "="*60)
-print(f"{BOLD}{CYAN} TAREA 5: PIPELINE INTEGRADOR DE OPTIMIZACIÓN Y PERSISTENCIA COLUMNAR{RESET}")
+print(f"{BOLD}{CYAN} CONTEXTO: REGISTRO DE VISTA GLOBAL EN EL CATÁLOGO{RESET}")
 print("="*60)
-print(f"   {GREEN}[INFO]{RESET} Ejecutando un Broadcast Join en memoria remota compartida...")
-
-# Forzar optimización enviando la tabla pequeña (df_zonas) a todos los hilos
-resultado_final = df_usuarios.join(broadcast(df_zonas), "id")
-
-# USANDO LA CARPETA 'SALIDAS'
-ruta_salida = "salidas/resultado_join"
-print(f"   {GREEN}[INFO]{RESET} Escribiendo resultados en formato Parquet local en: {YELLOW}{ruta_salida}{RESET}")
-
-# .write.mode("overwrite") evita errores si ejecutas el script más de una vez
-resultado_final.write.mode("overwrite").parquet(ruta_salida)
-
+# Registrar de forma global en el catálogo distribuido
+df_productos.createOrReplaceGlobalTempView("catalogo_global")
+print(f"   {GREEN}[INFO]{RESET} Vista global 'catalogo_global' registrada con éxito en la sesión primaria.")
 print("-" * 60)
-print(f" {BOLD}{GREEN}¡Escritura completada con éxito!{RESET}")
-print("-" * 60)
-print(f" {BOLD}PASOS DE VALIDACIÓN FINAL EN SPARK UI (http://localhost:4040):{RESET}")
-print(f"   1. Pestaña {YELLOW}'SQL / DataFrames'{RESET} -> Clic a la última query para ver el nodo {GREEN}'BroadcastHashJoin'{RESET}.")
-print(f"   2. Pestaña {YELLOW}'Jobs'{RESET} -> Verás la tarea dedicada por el Driver al proceso de escritura ({CYAN}'write'{RESET}).")
 
-input("\nPresiona ENTER para dar por concluido el laboratorio completo...")
-spark.stop()
+# 2. Inicializar una Nueva Sesión de Spark Independiente (Simulación de consulta aislada)
+spark_aislada = SparkSession.builder.appName("SesionAislada").getOrCreate()
+spark_aislada.sparkContext.setLogLevel("ERROR")
+
+print(f"{BOLD} ACCEDIENDO A GLOBAL_TEMP DESDE UNA SPARKSESSION SECUNDARIA{RESET}")
+print("-" * 60)
+resultado = spark_aislada.sql("""
+    SELECT ProductKey, Product, Category, Price 
+    FROM global_temp.catalogo_global
+""")
+resultado.show(10, truncate=False)
 print("="*60 + "\n")
+
+# Cerrar el ecosistema de sesiones de forma limpia
+spark_principal.stop()
+spark_aislada.stop()

@@ -116,7 +116,9 @@ EOF
 python3 generar_parquet_inicial.py
 rm generar_parquet_inicial.py
 ```
-![alt text](image-12.png)
+
+![lab5](../curso_python_spark/images/lab5_1.png)
+
 ---
 
 #### Paso 2. RDD con esquema desde CSV
@@ -188,8 +190,10 @@ if os.path.exists(OUTPUT_DIR):
 print("="*60 + "\n")
 
 ```
-![alt text](image-1.png)
-![alt text](image-2.png)
+![lab5](../curso_python_spark/images/lab5_2.png)
+
+!![lab5](../curso_python_spark/images/lab5_3.png)
+
 ---
 #### Paso 3. Leer desde un archivo Parquet local con esquema
 
@@ -255,8 +259,10 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-![alt text](image-3.png)
-![alt text](image-4.png)
+![lab5](../curso_python_spark/images/lab5_4.png)
+
+![lab5](../curso_python_spark/images/lab5_5.png)
+
 > **Recomendación:** Utilizar DataFrames cuando sea posible. Si bien es factible crear RDDs con esquemas desde archivos Parquet, se recomienda utilizar DataFrames directamente, ya que ofrecen un mejor rendimiento y funcionalidades optimizadas para el procesamiento de datos estructurados.
 
 ---
@@ -317,7 +323,8 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-![alt text](image-5.png)
+![lab5](../curso_python_spark/images/lab5_6.png)
+
 ---
 
 ### Tarea 3. Aplicando transformaciones comunes
@@ -378,7 +385,8 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-6.png)
+![lab5](../curso_python_spark/images/lab5_7.png)
+
 ---
 #### 2. Función `flatMap`
 
@@ -430,7 +438,8 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-7.png)
+![lab5](../curso_python_spark/images/lab5_8.png)
+
 ---
 #### 3. Función `filter`
 
@@ -494,7 +503,8 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-8.png)
+![lab5](../curso_python_spark/images/lab5_9.png)
+
 ---
 #### 4. Función `distinct`
 
@@ -551,7 +561,8 @@ print("="*60 + "\n")
 
 spark.stop()
 ```
-![alt text](image-9.png)
+![lab5](../curso_python_spark/images/lab5_10.png)
+
 ---
 #### 5. Función `union`, `intersection`, `subtract` y `cartesian`
 
@@ -591,7 +602,8 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-10.png)
+![lab5](../curso_python_spark/images/lab5_11.png)
+
 ---
 #### 6. Agregaciones Clave-Valor (`groupByKey`, `reduceByKey`, `sortByKey`)
 
@@ -650,7 +662,8 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-11.png)
+![lab5](../curso_python_spark/images/lab5_12.png)
+
 
 ---
 

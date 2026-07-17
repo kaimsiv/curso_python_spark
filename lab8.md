@@ -57,7 +57,8 @@ echo -e "Year,TotalSales\n2024,810000" > data/TotalSales/Sales2024.csv
 echo -e "Year,TotalSales\n2025,890000" > data/TotalSales/Sales2025.csv
 ```
 
-![alt text](image.png)
+![lab8](../curso_python_spark/images/lab8_1.png)
+
 ---
 
 ### Instrucciones
@@ -113,7 +114,8 @@ spark.stop()
 
 ```
 
-![alt text](image-1.png)
+![lab8](../curso_python_spark/images/lab8_2.png)
+
 
 ### Paso 2. Agrupar por más de un campo
 
@@ -158,7 +160,8 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-2.png)
+![lab8](../curso_python_spark/images/lab8_3.png)
+
 
 ---
 ### Paso 3. Aplicar múltiples funciones de agregación en simultáneo
@@ -206,7 +209,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-3.png)
+![lab8](../curso_python_spark/images/lab8_4.png)
 
 ---
 ### Paso 4. Filtrado de agrupaciones usando HAVING
@@ -252,7 +255,8 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-4.png)
+![lab8](../curso_python_spark/images/lab8_5.png)
+
 
 ---
 ### Paso 5. Agregación global sin agrupación
@@ -296,7 +300,7 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-5.png)
+![lab8](../curso_python_spark/images/lab8_6.png)
 
 ---
 
@@ -357,7 +361,7 @@ spark.stop()
 
 ```
 
-![alt text](image-6.png)
+![lab8](../curso_python_spark/images/lab8_7.png)
 
 
 
@@ -441,8 +445,10 @@ print("="*60 + "\n")
 spark.stop()
 
 ```
-![alt text](image-7.png)
-![alt text](image-8.png)
+![lab8](../curso_python_spark/images/lab8_8.png)
+
+![lab8](../curso_python_spark/images/lab8_9.png)
+
 
 ---
 ### Paso 8. Unión Vertical con UNION

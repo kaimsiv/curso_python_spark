@@ -43,8 +43,10 @@ echo -e "nombre,edad,ciudad,id\nMiguel,31,CDMX,1\nAna,25,Guadalajara,2\nPedro,45
 echo -e "id,zona\n1,Norte\n2,Occidente\n3,Norte\n4,Centro\n5,Occidente\n6,Sur\n7,Centro\n8,Occidente\n9,Sur\n10,Centro" > data/data2.csv
 
 ```
-![alt text](image.png)
-![alt text](image-1.png)
+
+![resultado](../curso_python_spark/images/lab9_1.png)
+
+![resultado](../curso_python_spark/images/lab9_2.png)
 
 ---
 
@@ -99,9 +101,10 @@ spark.stop()
 print(f"\n {BOLD}Sesión finalizada. Interfaz web apagada correctamente.{RESET}\n")
 
 ```
-![alt text](image-2.png)
+![resultado](../curso_python_spark/images/lab9_3.png)
 
-![alt text](image-3.png)
+
+![resultado](../curso_python_spark/images/lab9_4.png)
 
 ---
 
@@ -164,9 +167,11 @@ spark.stop()
 print("="*60 + "\n")
 
 ```
-![alt text](image-4.png)
+![resultado](../curso_python_spark/images/lab9_5.png)
 
-![alt text](image-5.png)
+
+![resultado](../curso_python_spark/images/lab9_6.png)
+
 
 ---
 
@@ -219,7 +224,7 @@ spark.stop()
 
 ```
 
-![alt text](image-6.png)
+![resultado](../curso_python_spark/images/lab9_7.png)
 
 ---
 
@@ -301,4 +306,7 @@ print("="*60 + "\n")
 
 ![resultado](../curso_python_spark/images/lab9_resultado2.png)
 
-![alt text](image-7.png)
+---
+
+![resultado](../curso_python_spark/images/lab9_resultado3.png)
+
